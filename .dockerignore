@@ -1,0 +1,10 @@
+.docker
+.gitpod
+media
+.dockerignore
+.gitignore
+.git
+.gitmodules
+.gitpod.yml
+README.md
+LICENSE

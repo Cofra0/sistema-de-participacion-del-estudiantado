@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+    django:
+        networks:
+            - nginx-proxy
+        container_name: django_boilerplate
+        hostname: apps.dcc.uchile.cl
+        build: 
+            context: ../
+            dockerfile: .docker/app/Dockerfile
+        command: gunicorn --workers 4 --bind :8000 core.wsgi
+        volumes:
+            - /home/instalar/static/django_boilerplate/:/static/:rw
+            - /home/instalar/media/django_boilerplate/:/media/:rw
+            - /home/instalar/logs/django_boilerplate:/logs:rw
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+        expose:
+            - 8000
+        env_file:
+            - app/.env
+        restart: always
+        # labels:
+        #     ofelia.enabled: "true"
+        #     ofelia.job-exec.upd_noticias.schedule: "@every 1h"
+        #     ofelia.job-exec.upd_noticias.command: "python manage.py upd_noticias"
+
+networks:
+    nginx-proxy:
+      external: true
+      name: nginx-proxy

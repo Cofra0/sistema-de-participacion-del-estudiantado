@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+    postgresql:
+        image: postgres:13.3
+        expose:
+            - 5432
+        restart: on-failure
+        volumes:
+            - ./data/postgres/:/var/lib/postgresql:rw
+        environment: 
+            POSTGRES_USER: desarrollo
+            POSTGRES_PASSWORD: desarroll0
+            POSTGRES_DB: boilerplate
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U desarrollo -d pgdevdb"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+    django:
+        container_name: django_boilerplate
+        build: 
+            context: ../
+            dockerfile: .docker/app/Dockerfile
+        command: python manage.py runserver 0.0.0.0:8000 --settings=core.settings.local
+        restart: "no"
+        volumes:
+            - ../app/:/usr/src/app/:rw
+            - ./data/static/:/static/:rw
+            - ./data/media/:/media/:rw
+            - ./data/logs:/logs:rw
+        ports:
+            - 8000:8000
+        env_file:
+            - app/.env
+        depends_on:
+            postgresql:
+                condition: service_healthy

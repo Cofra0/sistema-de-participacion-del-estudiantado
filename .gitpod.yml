@@ -1,0 +1,21 @@
+image: gitpod/workspace-postgres
+
+tasks:
+  - before: .gitpod/before.sh
+    init: .gitpod/init.sh
+    command: .gitpod/command.sh
+
+ports:
+  - port: 8000
+    visibility: public
+    onOpen: notify
+
+vscode:
+  extensions:
+    - ms-python.python
+    - batisteo.vscode-django
+    - esbenp.prettier-vscode
+    - aaron-bond.better-comments
+    - sndst00m.vscode-native-svg-preview
+    - abusaidm.html-snippets
+    - dsznajder.es7-react-js-snippets

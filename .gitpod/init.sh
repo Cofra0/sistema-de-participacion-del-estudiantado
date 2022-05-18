@@ -6,7 +6,7 @@ git submodule sync
 git submodule foreach git checkout main
 git submodule foreach git pull
 
-cd /workspace/django-boilerplate
+cd /workspace/sistema-de-participacion-del-estudiantado
 cp app/core/settings/gitpod.py app/core/settings/gitpod-tmp.py
 
 echo "# /bin/bash
@@ -27,10 +27,10 @@ sed -i "s|https://dcc.uchile.cl|https://8000-$GITPOD_HOST|g" .gitpod/env.sh
 source .gitpod/env.sh
 
 rm /workspace/django-boilerplate/app/sso
-ln -s /workspace/django-boilerplate/django_sso/app/sso /workspace/django-boilerplate/app/sso
-ln -s /workspace/django-boilerplate/django_sso/app/demo /workspace/django-boilerplate/app/demo
+ln -s /workspace/sistema-de-participacion-del-estudiantado/django_sso/app/sso /workspace/sistema-de-participacion-del-estudiantadoe/app/sso
+ln -s /workspace/sistema-de-participacion-del-estudiantado/django_sso/app/demo /workspace/sistema-de-participacion-del-estudiantado/app/demo
 
 
-cd /workspace/django-boilerplate/app
+cd /workspace/sistema-de-participacion-del-estudiantado/app
 python manage.py migrate
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('desarrollo', '', 'desarroll0')" | python manage.py shell

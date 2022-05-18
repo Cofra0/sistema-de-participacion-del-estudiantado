@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
 # Create your models here.
 
-class CustomUser(AbstractUser):
+class CustomUser(User):
     # Por simplicidad se extiende el usuario de django
     # id -> automatico si no se define primary key
 

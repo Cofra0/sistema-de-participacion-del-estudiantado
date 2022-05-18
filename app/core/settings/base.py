@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "sso.apps.SsoConfig",
     "demo.apps.DemoConfig",
+    "encuestas"
 ]
 
 MIDDLEWARE = [

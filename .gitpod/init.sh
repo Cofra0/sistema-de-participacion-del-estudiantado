@@ -27,7 +27,7 @@ sed -i "s|https://dcc.uchile.cl|https://8000-$GITPOD_HOST|g" .gitpod/env.sh
 source .gitpod/env.sh
 
 rm /workspace/sistema-de-participacion-del-estudiantado/app/sso
-ln -s /workspace/sistema-de-participacion-del-estudiantado/django_sso/app/sso /workspace/sistema-de-participacion-del-estudiantadoe/app/sso
+ln -s /workspace/sistema-de-participacion-del-estudiantado/django_sso/app/sso /workspace/sistema-de-participacion-del-estudiantado/app/sso
 ln -s /workspace/sistema-de-participacion-del-estudiantado/django_sso/app/demo /workspace/sistema-de-participacion-del-estudiantado/app/demo
 
 

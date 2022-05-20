@@ -23,7 +23,7 @@ export GITPOD_HOST=`gp url | sed "s|https://||"`
 sed -i "s|GITPOD_HOST|8000-$GITPOD_HOST|g" app/core/settings/gitpod-tmp.py
 sed -i "s|GITPOD_URL|https://8000-$GITPOD_HOST|g" app/core/settings/gitpod-tmp.py
 sed -i "s|core.settings.production|core.settings.gitpod-tmp|g" .gitpod/env.sh
-sed -i "s|https://dcc.uchile.cl|https://8000-$GITPOD_HOST|g" .gitpod/env.sh
+sed -i "s|http://localhost:8000|https://8000-$GITPOD_HOST|g" .gitpod/env.sh
 source .gitpod/env.sh
 
 rm /workspace/sistema-de-participacion-del-estudiantado/app/sso

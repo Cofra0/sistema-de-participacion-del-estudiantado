@@ -95,6 +95,9 @@ MEDIA_URL = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Se comentan porque me dan error
+
+
 EMAIL_BACKEND = get_env_variable("DJANGO_EMAIL_BACKEND")
 EMAIL_HOST = get_env_variable("DJANGO_EMAIL_HOST")
 EMAIL_PORT = get_env_variable("DJANGO_EMAIL_PORT")

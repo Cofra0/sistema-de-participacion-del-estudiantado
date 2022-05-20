@@ -32,5 +32,6 @@ ln -s /workspace/sistema-de-participacion-del-estudiantado/django_sso/app/demo /
 
 
 cd /workspace/sistema-de-participacion-del-estudiantado/app
+psql -U gitpod -c 'CREATE DATABASE boilerplate;'
 python manage.py migrate
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('desarrollo', '', 'desarroll0')" | python manage.py shell

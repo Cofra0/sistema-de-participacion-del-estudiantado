@@ -71,7 +71,7 @@ class Encuesta(models.Model):
         '''
         # Si la encuesta aún tiene puntos asignados
         if self.puntos_totales>0:
-            creador = self.creador
+            creador = self.creador.persona
             creador.puntos+=self.puntos_totales # Se le retornan los puntos al creador
             self.puntos_totales = 0 # Se quitan los puntos a la encuesta   
             

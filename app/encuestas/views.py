@@ -21,7 +21,7 @@ def encuestas(request):  # the index view
     encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
         "-puntos_encuesta"
     )  # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
-    return render(request, "encuestas/index.html", {"encuestas": encuestasDisponibles})
+    return render(request, "encuestas/index.html", {})
 
 
 # Vista del resumen de encuestas creadas y respondidas por el usuario

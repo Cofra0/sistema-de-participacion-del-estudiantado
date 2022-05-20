@@ -18,9 +18,8 @@ def main(request):
 
 # Vista de la pagina principal
 def encuestas(request):  # the index view
-    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
-        "-puntos_encuesta"
-    )  # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
+    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by("-puntos_encuesta")
+    # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
     return render(request, "encuestas/index.html", {})
 
 
@@ -35,5 +34,5 @@ def publicar_encuesta(request):
 
 
 # Vista donde la encuesta está incertada
-def encuesta(request):
-    return render(request, "encuestas/encuesta.html", {})
+def encuesta_prueba(request):
+    return render(request, "encuestas/encuesta_prueba.html", {})

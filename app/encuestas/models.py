@@ -3,13 +3,15 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class Persona(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING, null=True, blank=True)
     puntos = models.IntegerField(verbose_name="Puntos disponibles del usuario", default=200)
 
-#class CustomUser(User):
-    # Por simplicidad se extiende el usuario de django
-    # id -> automatico si no se define primary key
+
+# class CustomUser(User):
+# Por simplicidad se extiende el usuario de django
+# id -> automatico si no se define primary key
 
 #    puntos = models.IntegerField(verbose_name="Puntos disponibles del usuario", default=1)
 

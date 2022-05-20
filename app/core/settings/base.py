@@ -88,8 +88,7 @@ DATE_FORMAT = "d/m/Y"
 
 STATIC_URL = "static/"
 STATIC_ROOT = "/static"
-#STATICFILES_DIRS = ("staticfiles",)
-STATICFILES_DIRS = ("encuestas/templates/encueatas/static",)
+STATICFILES_DIRS = ("staticfiles",)
 
 MEDIA_ROOT = get_env_variable("DJANGO_MEDIA_ROOT", "/media")
 MEDIA_URL = "media/"

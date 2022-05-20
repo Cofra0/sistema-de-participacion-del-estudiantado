@@ -1,9 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template.loader import get_template
-from django.shortcuts import render, redirect
-from encuestas.models import *
-from django.contrib.auth import authenticate, login, logout
+
+# from django.http import HttpResponse, HttpResponseRedirect
+# from django.template.loader import get_template
+from django.shortcuts import render
+from encuestas.models import Encuesta
+
+
+# from django.contrib.auth import authenticate, login, logout
 
 # Renderiza la pagina principal de encuestas.
 @login_required

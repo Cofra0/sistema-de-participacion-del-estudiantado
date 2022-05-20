@@ -6,6 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

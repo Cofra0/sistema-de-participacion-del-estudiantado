@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('encuestas', '0002_delete_customuser'),
+        ("encuestas", "0002_delete_customuser"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='encuesta',
-            name='hash',
-            field=models.CharField(default='Paral3l3pipedo', max_length=255, verbose_name='Código para reclamar puntos de encuesta (Máximo de 200 carácteres)'),
+            model_name="encuesta",
+            name="hash",
+            field=models.CharField(
+                default="Paral3l3pipedo", max_length=255, verbose_name="Código para reclamar puntos de encuesta (Máximo de 200 carácteres)"
+            ),
         ),
     ]

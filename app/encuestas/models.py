@@ -3,12 +3,15 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class Persona(models.Model):
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING, null=True, blank=True)
+    puntos = models.IntegerField(verbose_name="Puntos disponibles del usuario", default=200)
 
-class CustomUser(User):
+#class CustomUser(User):
     # Por simplicidad se extiende el usuario de django
     # id -> automatico si no se define primary key
 
-    puntos = models.IntegerField(verbose_name="Puntos disponibles del usuario", default=1)
+#    puntos = models.IntegerField(verbose_name="Puntos disponibles del usuario", default=1)
 
 
 class Encuesta(models.Model):
@@ -18,10 +21,10 @@ class Encuesta(models.Model):
 
     descripcion = models.CharField(verbose_name="Descripción de la encuesta", max_length=255)
 
-    creador = models.ForeignKey(to=CustomUser, on_delete=models.CASCADE, related_name="Crea")
+    creador = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="Crea")
 
     # Para la tabla intermedia
-    participantes = models.ManyToManyField(CustomUser, through="Responde", related_name="Participa")
+    participantes = models.ManyToManyField(User, through="Responde", related_name="Participa")
 
     plazo = models.DateTimeField(verbose_name="Fecha límite para responder")
 
@@ -37,7 +40,7 @@ class Encuesta(models.Model):
 
 
 class Responde(models.Model):
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     encuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
 
     fecha = models.DateTimeField(verbose_name="Fecha de la respuesta")

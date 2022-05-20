@@ -6,7 +6,7 @@ from core.functions import get_env_variable
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = get_env_variable("DJANGO_SECRET_KEY")
+SECRET_KEY = 'django-insecure-25c109nu!-sg-n2!zc0s_qe#)un*jn3z3$b%*x39-xzs*a=j0!'#get_env_variable("DJANGO_SECRET_KEY")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -53,12 +53,15 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": get_env_variable("DJANGO_DB_ENGINE"),
-        "NAME": get_env_variable("DJANGO_DB_NAME"),
-        "USER": get_env_variable("DJANGO_DB_USER"),
-        "PASSWORD": get_env_variable("DJANGO_DB_PASSWORD"),
-        "HOST": get_env_variable("DJANGO_DB_HOST"),
-        "PORT": get_env_variable("DJANGO_DB_PORT"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    
+#        "ENGINE": get_env_variable("DJANGO_DB_ENGINE"),
+#        "NAME": get_env_variable("DJANGO_DB_NAME"),
+#        "USER": get_env_variable("DJANGO_DB_USER"),
+#        "PASSWORD": get_env_variable("DJANGO_DB_PASSWORD"),
+#        "HOST": get_env_variable("DJANGO_DB_HOST"),
+#        "PORT": get_env_variable("DJANGO_DB_PORT"),
     }
 }
 
@@ -95,19 +98,22 @@ MEDIA_URL = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-EMAIL_BACKEND = get_env_variable("DJANGO_EMAIL_BACKEND")
-EMAIL_HOST = get_env_variable("DJANGO_EMAIL_HOST")
-EMAIL_PORT = get_env_variable("DJANGO_EMAIL_PORT")
-EMAIL_USE_TLS = get_env_variable("DJANGO_EMAIL_USE_TLS")
-EMAIL_HOST_USER = get_env_variable("DJANGO_EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = get_env_variable("DJANGO_EMAIL_HOST_PASSWORD")
+# Se comentan porque me dan error
 
-SERVER_EMAIL = get_env_variable("DJANGO_SERVER_EMAIL")
 
-BASE_URL = get_env_variable("DJANGO_BASE_URL")
+#EMAIL_BACKEND = get_env_variable("DJANGO_EMAIL_BACKEND")
+#EMAIL_HOST = get_env_variable("DJANGO_EMAIL_HOST")
+#EMAIL_PORT = get_env_variable("DJANGO_EMAIL_PORT")
+#EMAIL_USE_TLS = get_env_variable("DJANGO_EMAIL_USE_TLS")
+#EMAIL_HOST_USER = get_env_variable("DJANGO_EMAIL_HOST_USER")
+#EMAIL_HOST_PASSWORD = get_env_variable("DJANGO_EMAIL_HOST_PASSWORD")
+
+#SERVER_EMAIL = get_env_variable("DJANGO_SERVER_EMAIL")
+
+#BASE_URL = get_env_variable("DJANGO_BASE_URL")
 
 # DCC SSO
-LOGIN_URL = get_env_variable("DJANGO_LOGIN_URL")
-SSO_URL = get_env_variable("DJANGO_SSO_URL")
-SSO_APP = get_env_variable("DJANGO_SSO_APP")
-SSO_AUTH = get_env_variable("DJANGO_SSO_AUTH")
+#LOGIN_URL = get_env_variable("DJANGO_LOGIN_URL")
+#SSO_URL = get_env_variable("DJANGO_SSO_URL")
+#SSO_APP = get_env_variable("DJANGO_SSO_APP")
+#SSO_AUTH = get_env_variable("DJANGO_SSO_AUTH")

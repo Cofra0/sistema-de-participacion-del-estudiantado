@@ -96,3 +96,35 @@ class Responde(models.Model):
 def handler(sender, instance, created, **kwargs):
     if created:
         Persona.objects.create(user=instance)
+
+@receiver(post_save, sender=Responde)
+def givePoints(sender, answer, created, **kwargs):
+    """
+    Método que se ejecuta al momento de guardar una respuesta de encuestas. Aquí se agregan
+    los puntos correspondientes al usuario simplemente.
+    El enviador de la señal es Responde, y se obtiene la instancia creada de Respuesta
+    """
+    if created:
+        user = answer.usuario
+        user_points = user.puntos
+        setattr(user, "puntos", user_points + answer.puntos)
+        user.save()  # guardamos los cambios
+
+def setBasePoints(survey, base_points):
+    """
+    Método que establece la cantidad de puntos a la cantidad base
+    """
+    setattr(survey, "puntos_encuesta", base_points)
+    survey.save()
+
+@receiver(post_save, sender=Responde)
+def discountSurveyPoints(sender, answer, created, **kwargs):
+    survey = answer.encuesta
+    actual_survey_points = answer.puntos_totales
+    if created and actual_survey_points != 0: #Verificamos que no se hayan acabado los puntos de la encuesta
+        points_to_discount = answer.puntos_encuesta
+        new_points = actual_survey_points - points_to_discount
+        if (new_points == 0): # Se acabaron los puntos y debemos setearlo a lo base
+            setBasePoints(survey, 1) # Por ahora los puntos base son 10 puntos
+        setattr(survey, "puntos_totales", new_points)
+        survey.save()

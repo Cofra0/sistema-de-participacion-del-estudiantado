@@ -90,8 +90,9 @@ class Responde(models.Model):
 
     puntos = models.IntegerField(verbose_name="Puntos entregados por responder")
 
+
 # Para que se cree una persona cada vez que se crea un usuario
 @receiver(post_save, sender=User)
 def handler(sender, instance, created, **kwargs):
-    if created: 
-        Persona.objects.create(user = instance)
+    if created:
+        Persona.objects.create(user=instance)

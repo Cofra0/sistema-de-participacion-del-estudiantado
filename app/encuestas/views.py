@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
+
 # from django.http import HttpResponse, HttpResponseRedirect
 # from django.template.loader import get_template
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render
 from encuestas.utils import validar_form
 from django.http import HttpResponse, JsonResponse
 from encuestas import models
@@ -60,6 +61,7 @@ def encuesta_seleccionada(request):
         else:
             messages.error(request, "Hash incorrecto")
             return render(request, "encuesta_seleccionada.html", datos_encuesta)
+
 
 # Vista del formulario para publicar una encuesta
 @login_required

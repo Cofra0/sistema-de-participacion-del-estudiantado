@@ -14,9 +14,10 @@ from encuestas.models import Encuesta
 # Renderiza la pagina principal de encuestas.
 @login_required
 def main(request):
-    return redirect(reverse("encuestas:encuestas"))
+    return redirect(reverse("encuestas:encuestas"))  # Redirecciona a las encuestas
 
 
+# Vista del formulario para publicar una encuesta
 @login_required
 def agregar_encuesta(request):
 
@@ -86,12 +87,6 @@ def encuestas(request):  # the index view
 # Vista del resumen de encuestas creadas y respondidas por el usuario
 @login_required
 def mis_encuestas(request):
-    return render(request, "encuestas/missing.html", {})
-
-
-# Vista del formulario para publicar una encuesta
-@login_required
-def publicar_encuesta(request):
     return render(request, "encuestas/missing.html", {})
 
 

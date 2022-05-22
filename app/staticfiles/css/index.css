@@ -161,3 +161,7 @@ td.poll_name{
     background-color: rgb(175, 175, 175);
     border-radius: .5rem;
 }
+
+a {
+    text-decoration:none !important;
+}

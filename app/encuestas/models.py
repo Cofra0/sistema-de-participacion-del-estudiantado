@@ -99,35 +99,35 @@ def handler(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Responde)
-def givePoints(sender, answer, created, **kwargs):
+def givePoints(sender, instance, created, **kwargs):
     """
     Método que se ejecuta al momento de guardar una respuesta de encuestas. Aquí se agregan
     los puntos correspondientes al usuario simplemente.
     El enviador de la señal es Responde, y se obtiene la instancia creada de Respuesta
     """
     if created:
-        user = answer.usuario
-        user_points = user.puntos
-        setattr(user, "puntos", user_points + answer.puntos)
-        user.save()  # guardamos los cambios
+        user = instance.usuario
+        persona = user.persona  # Obtenemos la persona dado el usuario ya que son 1 a 1
+        persona.puntos += instance.puntos  # Sumamos los puntos obtenidos a los puntos actuales
+        persona.save()  # guardamos los cambios
 
 
 def setBasePoints(survey, base_points):
     """
     Método que establece la cantidad de puntos a la cantidad base
     """
-    setattr(survey, "puntos_encuesta", base_points)
+    survey.puntos_encuesta = base_points
     survey.save()
 
 
 @receiver(post_save, sender=Responde)
-def discountSurveyPoints(sender, answer, created, **kwargs):
-    survey = answer.encuesta
-    actual_survey_points = answer.puntos_totales
+def discountSurveyPoints(sender, instance, created, **kwargs):
+    survey = instance.encuesta
+    actual_survey_points = survey.puntos_totales
     if created and actual_survey_points != 0:  # Verificamos que no se hayan acabado los puntos de la encuesta
-        points_to_discount = answer.puntos_encuesta
+        points_to_discount = instance.puntos  # Obtenemos los puntos a ser descontados
         new_points = actual_survey_points - points_to_discount
         if new_points == 0:  # Se acabaron los puntos y debemos setearlo a lo base
             setBasePoints(survey, 1)  # Por ahora los puntos base son 10 puntos
-        setattr(survey, "puntos_totales", new_points)
+        survey.puntos_totales = new_points
         survey.save()

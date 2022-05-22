@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-
 # from django.http import HttpResponse, HttpResponseRedirect
 # from django.template.loader import get_template
 from django.shortcuts import render
@@ -33,18 +32,19 @@ def encuesta_seleccionada(request):
     }
 
     if request.method == "GET":
-
         return render(request, "encuesta_seleccionada.html", datos_encuesta)
 
     elif request.method == "POST":
         encuesta = Encuesta.objects.get(id=id_encuesta)
         hash = request.POST["hash"]
 
-        if str(hash) == str(encuesta.hash) and Responde.objects.filter(usuario=request.user, encuesta=encuesta) == []:
+        if str(hash) == str(encuesta.hash) and not Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
             puntos = encuesta.puntos_encuesta
-            encuesta.puntos_totales -= puntos
+            if encuesta.puntos_totales > 0:
+                encuesta.puntos_totales -= puntos
+                
             encuesta.save()
-            fecha = datetime.now().strftime("%Y/%m/%d")
+            fecha = datetime.now().strftime("%Y-%m-%d")
 
             # Guardamos los dato de haber respondido
             responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=puntos)
@@ -54,10 +54,11 @@ def encuesta_seleccionada(request):
             messages.success(request, f"Has reclamado {str(puntos)} puntos")
             return render(request, "encuesta_seleccionada.html", datos_encuesta)
 
-        elif str(hash) == str(encuesta.hash) and Responde.objects.filter(usuario=request.user, encuesta=encuesta) != []:
+        elif str(hash) == str(encuesta.hash) and Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
             # Devolver vista principal con algún mensaje de que ya reclamo los puntos
             messages.error(request, "Ya has reclamado estos puntos")
             return render(request, "encuesta_seleccionada.html", datos_encuesta)
+
         else:
             messages.error(request, "Hash incorrecto")
             return render(request, "encuesta_seleccionada.html", datos_encuesta)

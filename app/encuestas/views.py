@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 
 # from django.http import HttpResponse, HttpResponseRedirect
 # from django.template.loader import get_template
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from encuestas.utils import validar_form
 from django.http import HttpResponse, JsonResponse
 from encuestas import models
@@ -14,7 +14,7 @@ from encuestas.models import Encuesta
 # Renderiza la pagina principal de encuestas.
 @login_required
 def main(request):
-    return render(request, "main.html")
+    return redirect(reverse("encuestas:encuestas"))
 
 
 @login_required
@@ -71,25 +71,31 @@ def agregar_encuesta(request):
 def get_status_json(request, link):
     res = validar_form.get_status_url(link)
     return JsonResponse(res)
+
+
 # Create your views here.
 
 # Vista de la pagina principal
+@login_required
 def encuestas(request):  # the index view
     encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by("-puntos_encuesta")
     # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
-    return render(request, "encuestas/index.html", {})
+    return render(request, "encuestas/index.html", {"encuestasDisponibles": encuestasDisponibles})
 
 
 # Vista del resumen de encuestas creadas y respondidas por el usuario
+@login_required
 def mis_encuestas(request):
     return render(request, "encuestas/missing.html", {})
 
 
 # Vista del formulario para publicar una encuesta
+@login_required
 def publicar_encuesta(request):
     return render(request, "encuestas/missing.html", {})
 
 
 # Vista donde la encuesta está incertada
+@login_required
 def encuesta_prueba(request):
     return render(request, "encuestas/encuesta_prueba.html", {})

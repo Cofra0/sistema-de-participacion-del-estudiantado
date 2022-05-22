@@ -3,6 +3,7 @@ from django.shortcuts import render
 from encuestas.utils import validar_form
 from django.http import HttpResponse, JsonResponse
 from encuestas import models
+from encuestas.models import Encuesta
 
 
 # Renderiza la pagina principal de encuestas.
@@ -65,3 +66,7 @@ def agregar_encuesta(request):
 def get_status_json(request, link):
     res = validar_form.get_status_url(link)
     return JsonResponse(res)
+def encuesta_seleccionada(request):
+    id_encuesta = request.GET.get("id", "")
+    datos_encuesta = Encuesta.objects.get(id=id_encuesta)
+    return render(request, "encuesta_seleccionada.html", datos_encuesta)

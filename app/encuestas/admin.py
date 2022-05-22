@@ -1,9 +1,16 @@
-# from django.contrib import admin
+from django.contrib import admin
+
 # from django.contrib.auth.admin import UserAdmin
 
 # from .models import CustomUser
 
 # Register your models here.
+
+from encuestas.models import Persona, Encuesta, Responde
+
+admin.site.register(Persona)
+admin.site.register(Encuesta)
+admin.site.register(Responde)
 
 """
 class CustomUserAdmin(UserAdmin):

@@ -1,0 +1,144 @@
+*{
+	margin: 0;
+	padding: 0;
+    box-sizing: border-box;
+	list-style: none;
+	text-decoration: none;
+	border: none;
+	outline: none;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+
+
+
+/* Menú de navegación */
+header{
+    width: 100%;
+    top:0; left: 0; right:0;
+    background: #fffbc4;
+    padding:1rem 5%;
+    display: flex;
+    z-index: 1000;
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.55);
+    
+}
+
+header .logo{
+    color:black;
+    font-size: 2.5rem;
+    font-weight: bolder;
+    float: left;
+    width: 28%;
+}
+
+header .navbar{
+    text-align: center;
+    font-size: 1.6rem;
+    border-radius: .5rem;
+    padding:.5rem 1rem;
+    color:black;
+    align-items: center;
+    display: inline-block;
+    margin: 0 auto;
+}
+
+header .navbar a{
+    font-size: 1.4rem;
+    border-radius: .5rem;
+    padding:.3rem .5rem;
+    color:black;
+}
+
+header .navbar a.active,
+header .navbar a:hover{
+    font-size: 1.4rem;
+    color:rgb(93, 9, 9);
+    background: #d1cb85;/* #d09b39; */
+}
+
+header .user{
+    width: 28%;
+    display: flex;
+    float: right;
+}
+
+header .user_points{
+    width: 60%;
+    font-size: .7rem;
+}
+
+header .user .user_points h2{
+    width: 100%;
+    text-align: center;
+    margin-right: 6em;
+}
+
+header .user .user_points .points{
+    font-size: 2.2em;
+}
+
+header .user_name{
+    width: 40%;
+    font-size: .6rem;
+    background: #d1cb85;
+    padding: 1em;
+    border-radius: .5rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+header .user_name h2{
+    width: 80%;
+    text-align: center;
+}
+
+header .user_name i{
+    width: 20%;
+    margin-left: 10px;
+    font-size: 1.3rem;
+}
+
+header .user_name span{ 
+    font-size: 1.3rem;
+}
+
+/* Cierre de sesion */
+.close_session{
+    position: absolute;
+    background: #f9f9fb;
+    top: 7.5em;
+    right: 5%;
+    min-width: 14%;
+    padding: 1em 0 2em 0;
+    border-radius: .5rem;
+    border: 1px solid #d8d8d9;
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.556);
+}
+
+.cuser{
+    font-size: 2.2em;
+    margin-left: 1em;
+    margin-bottom: .8em;
+    text-align: left !important;
+}
+
+.close_session_btn{
+    margin-left: 1em;
+    margin-right: 1em;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    background: #d8d8d9;
+    font-size: 1.5em;
+    right: 0;
+    border-radius: .3rem;
+    border: 1px solid #d8d8d9;
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.085);
+}
+
+.close_session_nv{
+    display: none;
+}

@@ -1,0 +1,25 @@
+body {
+    background-color:   #fdebd0;
+}
+
+.title {
+    text-align: center;
+    font-size: 40px;
+    color: rgb(80, 80, 80);
+    margin-bottom: 20px;
+}
+
+.container {
+    background-color: ivory;
+}
+
+.container.custom-container {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    width: 60%;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 30px;
+    padding-top: 30px;
+}

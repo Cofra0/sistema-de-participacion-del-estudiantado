@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block links %} 
+    
+    {% endblock %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" media="screen" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    
+
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<body>
+
+    <!-- Navegation Menu start -->
+    <header>
+        <div class="logo">
+            <a href="/encuestas" class="logo">Logo</a>
+        </div>
+        
+    
+        <nav class="navbar">
+            <a id="encuestas" class="{% block cls_encuestas %} {% endblock %}"   href="/encuestas">Inicio</a>
+            <a id="mis_encuestas" class="{% block cls_encuesta %} {% endblock %}" href="/mis_encuestas">Mis Encuestas</a>
+            <a id="publicar" class="{% block cls_publicar %} {% endblock %}" href="/publicar_encuesta">Publicar Encuesta</a>
+        </nav>
+    
+        <div class="user">
+            <div class="user_points">
+                <h2>Mis puntos</h2>
+                <h2 class="points">121</h2>
+            </div>
+            
+            <div class="user_name" id="user_name">
+                <i class='fa fa-user'></i><h2>Jonh Jonhson</h2><span class="fa fa-sort-desc" id="arrow" aria-hidden="true"></span>
+                <div class="close_session_nv" id="close_session">
+                    <h2 class="cuser">Cuenta</h2>
+                    <a href="" class="close_session_btn">Cerrar Sesión</a>
+                </div>
+            </div>    
+        </div>
+    
+    </header>
+    <!-- Navegation Menu end -->
+
+
+
+    <!-- content's view start -->
+
+    {% block content %}
+
+    {% endblock %}
+
+    <!-- content's view end -->
+
+
+    <!-- footer seccion starts -->
+    <footer class="footer">
+    </footer>
+
+</body>
+
+<script src="{% static 'javascript/base.js' %}"></script>
+
+</html>

@@ -1,0 +1,24 @@
+{% extends "encuestas/base.html" %}
+{% load static %}
+
+{% block title %} Encuestas {% endblock %}
+
+{% block links %} 
+<link rel="stylesheet" type="text/css" href="{% static 'css/missing.css' %}" media="screen" />
+{% endblock %}
+
+{% block cls_encuestas %}{% endblock %}
+{% block cls_encuesta %}active{% endblock %}
+{% block cls_publicar %}{% endblock %}
+
+{% block content %}
+<!-- Error404 -->
+<section class="error">
+    <div class="e-border">
+        <h2>PÁGINA NO ENCONTRADA</h2>
+        <h3>Funcionalidad aún en etapa de dasarrollo</h3>
+        <img src="{% static 'img/trabajando1.png' %}" alt="" >
+    </div>
+</section>
+
+{% endblock %}

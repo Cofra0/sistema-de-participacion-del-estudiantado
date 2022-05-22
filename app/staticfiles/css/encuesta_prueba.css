@@ -1,0 +1,59 @@
+.encuesta{
+    background: #222a38;
+    padding: 2em;
+}
+
+.e-border{
+    background: #efefef;
+    color: #222a38;
+    text-align: center;
+    padding: 4em;
+    border-radius: 0.3em;
+}
+
+.encuesta h2{
+    font-size: 5em;
+    margin-bottom: .6em;
+}
+
+.encuesta h3{
+    font-size: 2em;
+    margin-bottom: 1.6em;
+}
+
+iframe{
+    width: 70%;
+    border: 10px solid #222a38;
+    border-radius: .5em;
+    background-color: #e1ded6;
+    margin-bottom: 1.6em;
+}
+
+form.hash{
+    color: #efefef;
+    background: #222a38;
+    border: 10px solid #222a38;
+    border-radius: .5em;
+    width: 70%;
+    margin-left: 15%;
+    padding: 1em;
+}
+
+form span{
+    font-size: 2.5em;
+    
+}
+
+form #hash{
+    margin-top: .5em;
+    font-size: 2em;
+    padding: .2em;
+}
+
+form .botonsubmit{
+    font-size: .7em;
+    border-radius: .2em;
+    margin-left: 1em;
+    padding: .5em 1em .5em 1em;
+    cursor: pointer;
+}

@@ -1,0 +1,163 @@
+/* Nombre de la plataforma */
+.name{
+    background-color: #222a38;
+    padding: 5%;
+    border-bottom: 15px solid #fffbc4;
+}
+
+.name h1{
+    text-align: center;
+    color: #fffbc4;
+    font-size: 100px;
+    text-shadow: 0 0 10px black;
+}
+
+/* footer */
+footer{
+    background-color: #222a38;
+    padding: 5%;
+    border-top: 15px solid #fffbc4;
+}
+
+
+
+/* Reanking Encuestas */
+.ranking_polls{
+    background-color: #eef0f5;/* #3E4A5E */
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+
+.ranking{
+    width: 70%;
+    margin: 0 15%;
+    padding: 1%;
+    background-color: white;
+    text-align: center;
+    border-radius: .5rem;
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.556);
+}
+
+table{
+    border-collapse: collapse;
+}
+
+.poll_rank{
+    width: 2em;
+    padding: 1em;
+}
+
+.poll_name{
+    width: 15em;
+}
+
+.poll_time{
+    width: 2em;
+}
+
+.poll_answers{
+    width: 6em;
+}
+
+.poll_link{
+    width: 4em;
+}
+
+.poll_points{
+    width: 5em;
+}
+
+.parameters{
+    background: gray;
+    font-size: 1.5rem;
+    
+}
+
+.parameters .poll_rank{
+    font-size: 1rem;
+    border-radius: .5rem  0 0 .5rem;
+    border-right: 3px solid #eef0f5;
+}
+
+.parameters .poll_points{
+    font-size: 1.5rem;
+    border-radius: 0 .5rem  .5rem 0;
+    
+}
+
+.polls tr:nth-child(even){
+    background: rgb(224, 224, 224);
+    font-size: 1.2rem; 
+}
+
+.polls tr:nth-child(odd){
+    background: rgb(202, 202, 202);
+    font-size: 1.2rem; 
+}
+
+.pts{
+    background: #f5f4ef;
+    border-radius:.5rem;
+    padding: 10px 15px;
+}
+
+.pts1{
+    background: #f5f4ef;
+    border-radius:.5rem;
+    padding: 5px 5px;
+    font-size: 1.8rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border: 3px solid rgb(177, 177, 177);
+}
+
+th.poll_points{
+   padding:10px 30px;
+}
+
+td.poll_points{
+    padding:0 70px;
+}
+
+tr {
+    border-bottom: 4px solid #eef0f5;
+    
+}
+
+th.poll_rank{
+    padding: 10px;
+    font-size: 1.8rem;
+}
+
+td.poll_name{
+    padding-left: 10px;
+    border-left: 4px solid #eef0f5;
+}
+
+
+.pag{
+    width: 100%;
+    text-align: center;
+    padding-top: 3em;
+}
+
+.paginacion {
+    display: inline-block;
+}
+
+.paginacion a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+}
+
+.paginacion a.activo {
+    background-color: #222a38;
+    color: white;
+    border-radius: .5rem;
+}
+
+.paginacion a:hover:not(.activo){
+    background-color: rgb(175, 175, 175);
+    border-radius: .5rem;
+}

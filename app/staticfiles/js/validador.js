@@ -181,7 +181,6 @@ function validate() {
         error.innerHTML = '';
         div.classList.remove("is-invalid");
     }
-    console.log('antes de return');
-    console.log(state);
+    
     return state;
 }

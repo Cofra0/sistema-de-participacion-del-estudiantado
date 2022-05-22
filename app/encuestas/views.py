@@ -66,6 +66,8 @@ def agregar_encuesta(request):
 def get_status_json(request, link):
     res = validar_form.get_status_url(link)
     return JsonResponse(res)
+
+
 def encuesta_seleccionada(request):
     id_encuesta = request.GET.get("id", "")
     datos_encuesta = Encuesta.objects.get(id=id_encuesta)

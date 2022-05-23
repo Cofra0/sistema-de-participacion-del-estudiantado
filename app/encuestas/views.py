@@ -83,12 +83,12 @@ from datetime import datetime, timezone
 def encuestas(request):  # the index view
 
     puntos = Persona.objects.get(user=request.user).puntos
-    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by("-puntos_encuesta")        # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
+    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by("-puntos_encuesta") # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
     encuestas = list(encuestasDisponibles.values())
 
     for i in range(len(encuestas)):
-        encuestas[i]["plazo"] = (encuestasDisponibles[i].plazo-datetime.now(timezone.utc)).days     #se muestran los días faltantes para que termine la encuesta
-        encuestas[i]["participantes"] = encuestasDisponibles[i].participantes.count()               #se cuentan los usuarios que han participado de la encuesta
+        encuestas[i]["plazo"] = (encuestasDisponibles[i].plazo-datetime.now(timezone.utc)).days #se muestran los días faltantes para que termine la encuesta
+        encuestas[i]["participantes"] = encuestasDisponibles[i].participantes.count() #se cuentan los usuarios que han participado de la encuesta
     
     return render(request, "encuestas/index.html", {"encuestas": encuestas, "puntos":puntos})
 

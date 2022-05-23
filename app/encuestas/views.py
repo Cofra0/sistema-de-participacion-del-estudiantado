@@ -64,7 +64,7 @@ def agregar_encuesta(request):
             return HttpResponse("Se guardó la encuesta")
         else:
 
-            info = {"errores": errores, "valores": valores, "addattr": addattr, "puntos_disp": puntos_user, "puntos":puntos_user}
+            info = {"errores": errores, "valores": valores, "addattr": addattr, "puntos_disp": puntos_user, "puntos": puntos_user}
 
             return render(request, "formulario.html", info)
 

@@ -94,3 +94,8 @@ def mis_encuestas(request):
 @login_required
 def encuesta_prueba(request):
     return render(request, "encuestas/encuesta_prueba.html", {})
+
+
+@login_required
+def cerrar_sesion(request):
+    return redirect(reverse("sso:logout"))

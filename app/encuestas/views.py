@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 
 # from django.http import HttpResponse, HttpResponseRedirect
 # from django.template.loader import get_template
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from encuestas.utils import validar_form
 from django.http import JsonResponse
@@ -17,6 +18,10 @@ from django.core.paginator import Paginator
 # Renderiza la pagina principal de encuestas.
 @login_required
 def encuesta_seleccionada(request):
+    user = request.user
+    user_ins = models.Persona.objects.get(user=user)
+    puntos_user = user_ins.puntos
+
     id_encuesta = int(request.GET["id"])
     encuesta = Encuesta.objects.get(id=id_encuesta)
 
@@ -31,6 +36,7 @@ def encuesta_seleccionada(request):
         "descripcion": encuesta.descripcion,
         "link": link,
         "puntos_encuesta": encuesta.puntos_encuesta,
+        "puntos": puntos_user,
     }
 
     if request.method == "GET":
@@ -41,25 +47,25 @@ def encuesta_seleccionada(request):
         hash = request.POST["hash"]
 
         if str(hash) == str(encuesta.hash) and not Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
-            puntos = encuesta.puntos_encuesta
+            puntos_encuesta = encuesta.puntos_encuesta
             fecha = datetime.now().strftime("%Y-%m-%d")
 
             # Guardamos los dato de haber respondido
-            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=puntos)
+            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=puntos_encuesta)
             responde.save()
 
             # Devolver vista principal. con algún mensaje de éxito?
-            messages.success(request, f"Has reclamado {str(puntos)} puntos")
-            return render(request, "encuestas/encuesta_seleccionada.html", datos_encuesta)
+            messages.success(request, f"Has reclamado {str(puntos_encuesta)} puntos")
+            return HttpResponseRedirect(request.path_info + "?id=" + str(id_encuesta))
 
         elif str(hash) == str(encuesta.hash) and Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
             # Devolver vista principal con algún mensaje de que ya reclamo los puntos
             messages.error(request, "Ya has reclamado estos puntos")
-            return render(request, "encuestas/encuesta_seleccionada.html", datos_encuesta)
+            return HttpResponseRedirect(request.path_info + "?id=" + str(id_encuesta))
 
         else:
             messages.error(request, "Hash incorrecto")
-            return render(request, "encuestas/encuesta_seleccionada.html", datos_encuesta)
+            return HttpResponseRedirect(request.path_info + "?id=" + str(id_encuesta))
 
 
 # Vista del formulario para publicar una encuesta
@@ -107,8 +113,7 @@ def agregar_encuesta(request):
 
             # Devolver vista principal. con algún mensaje de éxito?
             messages.success(request, "Se guardó la encuesta")
-
-            return render(request, "encuestas/formulario.html")
+            return HttpResponseRedirect(request.path_info)
         else:
 
             info = {"errores": errores, "valores": valores, "addattr": addattr, "puntos_disp": puntos_user, "puntos": puntos_user}

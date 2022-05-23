@@ -20,7 +20,7 @@
         <h3>Descripción: {{ descripcion }}</h3>
         <iframe src="{{ link }}" width="700" height="947" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
 
-        {% include 'messages.html' %}
+        {% include 'encuestas/messages.html' %}
 
         <form class="hash" method="POST">
             {% csrf_token %}

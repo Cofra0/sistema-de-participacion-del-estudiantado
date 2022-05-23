@@ -28,7 +28,7 @@ def agregar_encuesta(request):
 
     if request.method == "GET":
         valores = {"puntos": puntos_user, "respuestas_necesarias": 1, "hora_termino": "23:59"}
-        return render(request, "formulario.html", {"valores": valores, "puntos_disp": puntos_user})
+        return render(request, "encuestas/formulario.html", {"valores": valores, "puntos_disp": puntos_user})
 
     elif request.method == "POST":
         errores, valores, addattr, res, date_obj = validar_form.validar_formulario(request, puntos_user)
@@ -66,7 +66,7 @@ def agregar_encuesta(request):
 
             info = {"errores": errores, "valores": valores, "addattr": addattr, "puntos_disp": puntos_user}
 
-            return render(request, "formulario.html", info)
+            return render(request, "encuestas/formulario.html", info)
 
 
 def get_status_json(request, link):

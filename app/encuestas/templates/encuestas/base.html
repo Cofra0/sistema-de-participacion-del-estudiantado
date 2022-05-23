@@ -35,11 +35,13 @@
         <div class="user">
             <div class="user_points">
                 <h2>Mis puntos</h2>
-                <h2 class="points">121</h2>
+                <h2 class="points">{{ puntos }}</h2>
             </div>
             
             <div class="user_name" id="user_name">
-                <i class='fa fa-user'></i><h2>Jonh Jonhson</h2><span class="fa fa-sort-desc" id="arrow" aria-hidden="true"></span>
+                {% if user.is_authenticated %}
+                <i class='fa fa-user'></i><h2>{{ user.first_name }}</h2><span class="fa fa-sort-desc" id="arrow" aria-hidden="true"></span>
+                {% endif %}
                 <div class="close_session_nv" id="close_session">
                     <h2 class="cuser">Cuenta</h2>
                     <a href="" class="close_session_btn">Cerrar Sesión</a>

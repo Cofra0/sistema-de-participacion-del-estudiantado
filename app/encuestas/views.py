@@ -6,7 +6,8 @@ from django.shortcuts import render, redirect, reverse
 from encuestas.utils import validar_form
 from django.http import HttpResponse, JsonResponse
 from encuestas import models
-from encuestas.models import Encuesta
+from encuestas.models import Encuesta, Persona
+from datetime import datetime, timezone
 
 
 # from django.contrib.auth import authenticate, login, logout
@@ -75,24 +76,26 @@ def get_status_json(request, link):
 
 
 # Create your views here.
-from datetime import datetime, timezone
-
-
 # Vista de la pagina principal
 @login_required
 def encuestas(request):  # the index view
 
     puntos = Persona.objects.get(user=request.user).puntos
 
-    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by("-puntos_encuesta") # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
+    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
+        "-puntos_encuesta"
+    )  # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
     encuestas = list(encuestasDisponibles.values())
 
     for i in range(len(encuestas)):
-        encuestas[i]["plazo"] = (encuestasDisponibles[i].plazo-datetime.now(timezone.utc)).days #se muestran los días faltantes para que termine la encuesta
-        encuestas[i]["participantes"] = encuestasDisponibles[i].participantes.count() #se cuentan los usuarios que han participado de la encuesta
-    
-    return render(request, "encuestas/index.html", {"encuestas": encuestas, "puntos":puntos})
+        encuestas[i]["plazo"] = (
+            encuestasDisponibles[i].plazo - datetime.now(timezone.utc)
+        ).days  # se muestran los días faltantes para que termine la encuesta
+        encuestas[i]["participantes"] = encuestasDisponibles[
+            i
+        ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
 
+    return render(request, "encuestas/index.html", {"encuestas": encuestas, "puntos": puntos})
 
 
 # Vista del resumen de encuestas creadas y respondidas por el usuario

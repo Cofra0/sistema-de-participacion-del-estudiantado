@@ -42,10 +42,6 @@ def encuesta_seleccionada(request):
 
         if str(hash) == str(encuesta.hash) and not Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
             puntos = encuesta.puntos_encuesta
-            if encuesta.puntos_totales > 0:
-                encuesta.puntos_totales -= puntos
-
-            encuesta.save()
             fecha = datetime.now().strftime("%Y-%m-%d")
 
             # Guardamos los dato de haber respondido
@@ -145,7 +141,7 @@ def encuestas(request):  # the index view
             i
         ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
 
-    paginator = Paginator(encuestasDisponibles, 15) # Mostramos 15 encuestas por pagina
+    paginator = Paginator(encuestas, 15)  # Mostramos 15 encuestas por pagina
 
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)

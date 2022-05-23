@@ -22,10 +22,10 @@
 
 
 {% block content %}
-
-    {% include 'encuestas/messages.html' %}
-
     <div class="custom-container container">
+        
+        {% include 'encuestas/messages.html' %}
+
         <div class="title">Nueva encuesta</div>
 
         <form id="form" method="post" action="{% url 'encuestas:nueva_encuesta' %}" enctype="multipart/form-data" onsubmit="return validate()">

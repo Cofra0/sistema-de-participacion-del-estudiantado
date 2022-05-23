@@ -14,14 +14,16 @@
 
 {% block content %}
 <!-- Encuesta -->
+
 <section class="encuesta">
+
+    {% include 'encuestas/messages.html' %}
+
     <div class="e-border">
         <h2>{{ nombre }}</h2>
         <h3>Descripción: {{ descripcion }}</h3>
         <h4>Puntos a recibir: {{ puntos_encuesta }}</h3>
         <iframe src="{{ link }}" width="700" height="947" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
-
-        {% include 'encuestas/messages.html' %}
 
         <form class="hash" method="POST">
             {% csrf_token %}

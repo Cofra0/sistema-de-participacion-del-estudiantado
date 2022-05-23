@@ -124,7 +124,7 @@ def setBasePoints(survey, base_points):
 def discountSurveyPoints(sender, instance, created, **kwargs):
     survey = instance.encuesta
     actual_survey_points = survey.puntos_totales
-    if created and actual_survey_points != 0:  # Verificamos que no se hayan acabado los puntos de la encuesta
+    if created and actual_survey_points >= 0:  # Verificamos que no se hayan acabado los puntos de la encuesta
         points_to_discount = instance.puntos  # Obtenemos los puntos a ser descontados
         new_points = actual_survey_points - points_to_discount
         if new_points == 0:  # Se acabaron los puntos y debemos setearlo a lo base

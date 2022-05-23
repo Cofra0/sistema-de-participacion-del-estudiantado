@@ -18,8 +18,8 @@ function validate() {
         div.classList.add("is-invalid");
         state = false;
     } 
-    else if (!(5 <= nombre.value.length <= 80)) {
-        error.innerHTML = 'El nombre debe tener entre 5 y 80 caracteres.';
+    else if (nombre.value.length < 5 || nombre.value.length > 50) {
+        error.innerHTML = 'El nombre debe tener entre 5 y 50 caracteres.';
         div.classList.add("is-invalid");
         state = false;
     }
@@ -34,8 +34,8 @@ function validate() {
         div.classList.add("is-invalid");
         state = false;
     }
-    else if (descripcion.value.length < 5) {
-        error.innerHTML = 'La descripción debe tener mínimo 5 caracteres.';
+    else if (descripcion.value.length < 5 || descripcion.value.length > 255) {
+        error.innerHTML = 'La descripción debe tener entre 5 y 255 caracteres.';
         div.classList.add("is-invalid");
         state = false;
     }

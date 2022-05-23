@@ -32,7 +32,7 @@
             </tr>
         </thead>
         <tbody class="polls">
-            {% for encuesta in encuestas%}
+            {% for encuesta in page_obj%}
             <tr>
                 <th scope="row" class="poll_rank">{{forloop.counter}}</th>
                 <td class="poll_name">{{encuesta.nombre}}</td>
@@ -47,13 +47,19 @@
 
     <div class="pag">
         <div class="paginacion">
-            <a href="#">&laquo;</a>
-            <a href="#" class="activo">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">&raquo;</a>
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo;</a>
+                <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+
+            <a class="activo">
+                {{ page_obj.number }}
+            </a>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+            {% endif %}
         </div>
     </div>
     

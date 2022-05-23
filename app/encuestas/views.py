@@ -9,6 +9,7 @@ from encuestas import models
 from django.contrib import messages
 from encuestas.models import Encuesta, Persona, Responde
 from datetime import datetime, timezone
+from django.core.paginator import Paginator
 
 
 # from django.contrib.auth import authenticate, login, logout
@@ -144,7 +145,12 @@ def encuestas(request):  # the index view
             i
         ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
 
-    return render(request, "encuestas/index.html", {"encuestas": encuestas, "puntos": puntos})
+    paginator = Paginator(encuestasDisponibles, 15) # Mostramos 15 encuestas por pagina
+
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "encuestas/index.html", {"encuestas": encuestas, "puntos": puntos, "page_obj": page_obj})
 
 
 # Vista del resumen de encuestas creadas y respondidas por el usuario

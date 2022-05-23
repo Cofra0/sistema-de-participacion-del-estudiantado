@@ -1,0 +1,39 @@
+{% extends "encuestas/base.html" %}
+{% load static %}
+
+{% block title %} Encuesta {% endblock %}
+
+{% block links %} 
+<link rel="stylesheet" type="text/css" href="{% static 'css/encuesta_prueba.css' %}" media="screen" />
+{% endblock %}
+
+
+{% block cls_encuestas %}{% endblock %}
+{% block cls_encuesta %}{% endblock %}
+{% block cls_publicar %}{% endblock %}
+
+{% block content %}
+<!-- Encuesta -->
+<section class="encuesta">
+    <div class="e-border">
+        <h2>{{ nombre }}</h2>
+        <h3>Descripción: {{ descripcion }}</h3>
+        <iframe src="{{ link }}" width="700" height="947" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+
+        {% include 'messages.html' %}
+
+        <form class="hash" method="POST">
+            {% csrf_token %}
+
+            <input type="text" name="id" id="id" value="{{ id }}" hidden>
+
+            <span class="code">Código de comprobación:</span> <br>
+            <label for="hash"></label>
+            <input type="text" name="hash" id="hash" placeholder="Introdusca hash">
+
+            <button class="botonsubmit" type="submit" onclick=""><span class="submittext">Enviar</span></button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% load static %}
+{% if messages %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/messages.css' %}" media="screen" />
+  <script src="{% static '/js/messages.js' %}"></script>
+
+  {% for message in messages %}
+    <div class="notification">
+      <div>
+        <button type="button" class="close" data-dismiss="alert" onclick="cerrarNotificacion()">
+        ×
+        </button>
+        <strong>{{ message }}</strong>
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}

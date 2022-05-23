@@ -42,7 +42,7 @@ def encuesta_seleccionada(request):
             puntos = encuesta.puntos_encuesta
             if encuesta.puntos_totales > 0:
                 encuesta.puntos_totales -= puntos
-                
+
             encuesta.save()
             fecha = datetime.now().strftime("%Y-%m-%d")
 

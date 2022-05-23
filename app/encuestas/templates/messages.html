@@ -1,10 +1,12 @@
 {% if messages %}
   {% for message in messages %}
-    <div class="alert alert-dismissible alert-success">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/message.css' %}" media="screen" />
+
+    <div class="notification" onclick="this.style.visibility='hidden';">
       <button type="button" class="close" data-dismiss="alert">
       ×
       </button>
-      <strong>{{message}}</strong>
+      <strong>{{ message }}</strong>
     </div>
   {% endfor %}
 {% endif %}

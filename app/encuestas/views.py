@@ -83,25 +83,31 @@ from datetime import datetime, timezone
 def encuestas(request):  # the index view
 
     puntos = Persona.objects.get(user=request.user).puntos
-    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by("-puntos_encuesta")        # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
+    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
+        "-puntos_encuesta"
+    )  # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
     encuestas = list(encuestasDisponibles.values())
 
     for i in range(len(encuestas)):
-        encuestas[i]["plazo"] = (encuestasDisponibles[i].plazo-datetime.now(timezone.utc)).days     #se muestran los días faltantes para que termine la encuesta
-        encuestas[i]["participantes"] = encuestasDisponibles[i].participantes.count()               #se cuentan los usuarios que han participado de la encuesta
-    
-    return render(request, "encuestas/index.html", {"encuestas": encuestas, "puntos":puntos})
+        encuestas[i]["plazo"] = (
+            encuestasDisponibles[i].plazo - datetime.now(timezone.utc)
+        ).days  # se muestran los días faltantes para que termine la encuesta
+        encuestas[i]["participantes"] = encuestasDisponibles[
+            i
+        ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
+
+    return render(request, "encuestas/index.html", {"encuestas": encuestas, "puntos": puntos})
 
 
 # Vista del resumen de encuestas creadas y respondidas por el usuario
 @login_required
 def mis_encuestas(request):
     puntos = Persona.objects.get(user=request.user).puntos
-    return render(request, "encuestas/missing.html", {"puntos":puntos})
+    return render(request, "encuestas/missing.html", {"puntos": puntos})
 
 
 # Vista donde la encuesta está incertada
 @login_required
 def encuesta_prueba(request):
     puntos = Persona.objects.get(user=request.user).puntos
-    return render(request, "encuestas/encuesta_prueba.html", {"puntos":puntos})
+    return render(request, "encuestas/encuesta_prueba.html", {"puntos": puntos})

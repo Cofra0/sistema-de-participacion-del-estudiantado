@@ -38,7 +38,7 @@
                 <td class="poll_name">{{encuesta.nombre}}</td>
                 <td class="poll_time">{{encuesta.plazo}}d</td>
                 <td class="poll_answers">{{encuesta.participantes}}/</td>
-                <td class="poll_link"><a href="/encuesta_prueba?id={{encuesta.id}}">Contestar</a></td>
+                <td class="poll_link"><a href="/encuesta?id={{ encuesta.id }}">Contestar</a></td>
                 <td class="poll_points"><div class="pts1">{{encuesta.puntos_encuesta}}</div></td>
             </tr>
             {% endfor %}

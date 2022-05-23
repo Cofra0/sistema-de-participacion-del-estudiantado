@@ -32,7 +32,7 @@ def encuesta_seleccionada(request):
     }
 
     if request.method == "GET":
-        return render(request, "encuesta_seleccionada.html", datos_encuesta)
+        return render(request, "encuestas/encuesta_seleccionada.html", datos_encuesta)
 
     elif request.method == "POST":
         encuesta = Encuesta.objects.get(id=id_encuesta)
@@ -52,16 +52,16 @@ def encuesta_seleccionada(request):
 
             # Devolver vista principal. con algún mensaje de éxito?
             messages.success(request, f"Has reclamado {str(puntos)} puntos")
-            return render(request, "encuesta_seleccionada.html", datos_encuesta)
+            return render(request, "encuestas/encuesta_seleccionada.html", datos_encuesta)
 
         elif str(hash) == str(encuesta.hash) and Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
             # Devolver vista principal con algún mensaje de que ya reclamo los puntos
             messages.error(request, "Ya has reclamado estos puntos")
-            return render(request, "encuesta_seleccionada.html", datos_encuesta)
+            return render(request, "encuestas/encuesta_seleccionada.html", datos_encuesta)
 
         else:
             messages.error(request, "Hash incorrecto")
-            return render(request, "encuesta_seleccionada.html", datos_encuesta)
+            return render(request, "encuestas/encuesta_seleccionada.html", datos_encuesta)
 
 
 # Vista del formulario para publicar una encuesta
@@ -108,7 +108,9 @@ def agregar_encuesta(request):
             user_ins.save()
 
             # Devolver vista principal. con algún mensaje de éxito?
-            return HttpResponse("Se guardó la encuesta")
+            messages.success(request, "Se guardó la encuesta")
+
+            return render(request, "encuestas/formulario.html")
         else:
 
             info = {"errores": errores, "valores": valores, "addattr": addattr, "puntos_disp": puntos_user, "puntos": puntos_user}

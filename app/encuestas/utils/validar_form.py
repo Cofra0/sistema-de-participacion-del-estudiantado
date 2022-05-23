@@ -85,7 +85,10 @@ def validar_formulario(request, puntos_disp):
             errores["fecha_termino"] = "La fecha ingresada no tiene el formato correcto."
             addattr["fecha_termino"] = "is-invalid"
 
-    if hora_termino != "" and termino and termino == today:
+    if hora_termino == "":
+        hora_termino = "23:59"
+        valores["hora_termino"] = hora_termino
+    elif termino and termino == today:
         try:
             end_time = datetime.datetime.strptime(hora_termino, "%H:%M").strftime("%H:%M")
             current_time = datetime.datetime.today().strftime("%H:%M")

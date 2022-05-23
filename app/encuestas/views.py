@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 # from django.template.loader import get_template
 from django.shortcuts import render
 from encuestas.utils import validar_form
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from encuestas import models
 from django.contrib import messages
 from encuestas.models import Encuesta, Persona, Responde

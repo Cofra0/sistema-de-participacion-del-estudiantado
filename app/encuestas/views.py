@@ -15,6 +15,8 @@ from django.core.paginator import Paginator
 
 # from django.contrib.auth import authenticate, login, logout
 
+PUNTOS_BASE = 1   # Puntos base a entregar por responder la encuesta independientemente de los puntos ofrecidos por el que la publica
+
 # Renderiza la pagina principal de encuestas.
 @login_required
 def encuesta_seleccionada(request):
@@ -145,6 +147,7 @@ def encuestas(request):  # the index view
         encuestas[i]["participantes"] = encuestasDisponibles[
             i
         ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
+        encuestas[i]["puntos_encuesta"] = encuestasDisponibles[i].puntos_encuesta + PUNTOS_BASE
 
     paginator = Paginator(encuestas, 15)  # Mostramos 15 encuestas por pagina
 

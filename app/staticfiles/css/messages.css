@@ -20,15 +20,23 @@
     float: left;
     border: black 1px solid;
     background: #c1c0c0;
-    padding: 6px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .close:hover{
     border-radius: 1px;
     background: #999999;
-    padding: 6px;
-    padding-left: 10px;
-    padding-right: 10px;
+}
+
+strong.mensaje-notificacion{
+    font-size: 26px;
+    color: black;
+}
+
+a.link-volver{
+    font-weight: bold;
+    float: right;
+    margin: 5px;
 }

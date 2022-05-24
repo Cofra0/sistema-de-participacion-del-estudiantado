@@ -166,15 +166,15 @@ def encuestas(request):  # the index view
         fechaDias = fecha.days
         hours, remainder = divmod(fechaSegundos, 3600)
         minutes, seconds = divmod(remainder, 60)
-        
+
         if fechaDias != 0:
-            encuestas[i]["plazo"] = '{}d'.format(int(fechaDias))
+            encuestas[i]["plazo"] = "{}d".format(int(fechaDias))
         elif int(hours) != 0:
-            encuestas[i]["plazo"] ='{:02}:{:02}:{:02}h'.format(int(hours), int(minutes), int(seconds))
-        elif int(minutes) !=0:
-            encuestas[i]["plazo"] ='{:02}:{:02}m'.format(int(minutes), int(seconds))
+            encuestas[i]["plazo"] = "{:02}:{:02}:{:02}h".format(int(hours), int(minutes), int(seconds))
+        elif int(minutes) != 0:
+            encuestas[i]["plazo"] = "{:02}:{:02}m".format(int(minutes), int(seconds))
         else:
-            encuestas[i]["plazo"] ='{:02}s'.format(int(seconds))
+            encuestas[i]["plazo"] = "{:02}s".format(int(seconds))
         encuestas[i]["participantes"] = encuestasDisponibles[
             i
         ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta

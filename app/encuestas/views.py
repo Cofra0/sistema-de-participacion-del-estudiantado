@@ -38,7 +38,7 @@ def encuesta_seleccionada(request):
         "nombre": encuesta.nombre,
         "descripcion": encuesta.descripcion,
         "link": link,
-        "puntos_encuesta": encuesta.puntos_encuesta,
+        "puntos_encuesta": encuesta.puntos_encuesta + PUNTOS_BASE,
         "puntos": puntos_user,
     }
 
@@ -54,11 +54,11 @@ def encuesta_seleccionada(request):
             fecha = datetime.now().strftime("%Y-%m-%d")
 
             # Guardamos los dato de haber respondido
-            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=puntos_encuesta)
+            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=puntos_encuesta + PUNTOS_BASE)
             responde.save()
 
             # Devolver vista principal. con algún mensaje de éxito?
-            messages.success(request, f"Has reclamado {str(puntos_encuesta)} puntos")
+            messages.success(request, f"Has reclamado {str(puntos_encuesta + PUNTOS_BASE)} puntos")
             return HttpResponseRedirect(request.path_info + "?id=" + str(id_encuesta))
 
         elif str(hash) == str(encuesta.hash) and Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
@@ -145,8 +145,6 @@ def get_status_json(request, link):
 @login_required
 def encuestas(request):  # the index view
 
-    
-
     encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
         "-puntos_encuesta"
     )  # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
@@ -156,15 +154,12 @@ def encuestas(request):  # the index view
         encuesta.active
 
     # Se vuelve a hacer la query
-    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
-        "-puntos_encuesta"
-    )  
+    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by("-puntos_encuesta")
     encuestas = list(encuestasDisponibles.values())
 
     # Estarán actualizados si se cerró la encuesta
     puntos = Persona.objects.get(user=request.user).puntos
-    
-        
+
     for i in range(len(encuestas)):
         encuestas[i]["plazo"] = (
             encuestasDisponibles[i].plazo - datetime.now(timezone.utc)

@@ -1,5 +1,5 @@
 body {
-    background-color:   #fffbc4;
+    background-color: #efefef;
 }
 
 .title {
@@ -22,4 +22,5 @@ body {
     padding-right: 25px;
     padding-bottom: 30px;
     padding-top: 30px;
+    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.55);
 }

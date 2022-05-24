@@ -144,7 +144,7 @@ def encuestas(request):  # the index view
         encuesta.active
 
     # Se vuelve a hacer la query
-    encuestasDisponibles = encuestasDisponibles.filter(activa=True).order_by(
+    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
         "-puntos_encuesta"
     )  
     encuestas = list(encuestasDisponibles.values())

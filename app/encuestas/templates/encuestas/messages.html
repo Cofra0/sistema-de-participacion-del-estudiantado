@@ -9,7 +9,8 @@
         <button type="button" class="close" data-dismiss="alert" onclick="cerrarNotificacion()">
         ×
         </button>
-        <strong>{{ message }}</strong>
+        <strong class="mensaje-notificacion">{{ message }}</strong>
+        <a class="link-volver" href="/encuestas">Volver a la página principal</a>
       </div>
     </div>
   {% endfor %}

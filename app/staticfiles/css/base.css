@@ -22,7 +22,7 @@ header{
     display: flex;
     z-index: 1000;
     box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.55);
-    
+    line-height: 1.1;
 }
 
 header .logo{
@@ -69,10 +69,12 @@ header .user_points{
     font-size: .7rem;
 }
 
-header .user .user_points h2{
+header .user .user_points .mis_puntos{
     width: 100%;
     text-align: center;
     margin-right: 6em;
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 header .user .user_points .points{
@@ -90,9 +92,11 @@ header .user_name{
     cursor: pointer;
 }
 
-header .user_name h2{
+header .user_name .usuario{
     width: 80%;
     text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
 header .user_name i{

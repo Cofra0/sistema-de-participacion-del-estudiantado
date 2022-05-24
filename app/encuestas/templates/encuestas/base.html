@@ -34,15 +34,16 @@
     
         <div class="user">
             <div class="user_points">
-                <h2>Mis puntos</h2>
-                <h2 class="points">{{ puntos }}</h2>
+                <div class="mis_puntos">Mis puntos</div>
+                <div class="points mis_puntos">{{ puntos }}</div>
             </div>
             
             <div class="user_name" id="user_name">
                 {% if user.is_authenticated %}
-                <i class='fa fa-user'></i><h2>{{ user.first_name }}</h2><span class="fa fa-sort-desc" id="arrow" aria-hidden="true"></span>
+                <i class='fa fa-user'></i><div class="usuario">{{ user.first_name }}</div><span class="fa fa-sort-desc" id="arrow" aria-hidden="true"></span>
                 {% endif %}
                 <div class="close_session_nv" id="close_session">
+                    <div class="cuser usuario">Cuenta</div>
                     <h2 class="cuser">Cuenta</h2>
                     <a href={% url 'sso:logout' %} class="close_session_btn">Cerrar Sesión</a>
                 </div>

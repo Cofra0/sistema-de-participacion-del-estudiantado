@@ -15,7 +15,8 @@ from django.core.paginator import Paginator
 
 # from django.contrib.auth import authenticate, login, logout
 
-PUNTOS_BASE = 1   # Puntos base a entregar por responder la encuesta independientemente de los puntos ofrecidos por el que la publica
+PUNTOS_BASE = 1  # Puntos base a entregar por responder la encuesta independientemente de los puntos ofrecidos por el que la publica
+
 
 # Renderiza la pagina principal de encuestas.
 @login_required
@@ -81,7 +82,11 @@ def agregar_encuesta(request):
 
     if request.method == "GET":
         valores = {"puntos": puntos_user, "respuestas_necesarias": 1, "hora_termino": "23:59"}
-        return render(request, "encuestas/formulario.html", {"valores": valores, "puntos_disp": puntos_user, "puntos": puntos_user})
+        return render(
+            request,
+            "encuestas/formulario.html",
+            {"valores": valores, "puntos_disp": puntos_user, "puntos": puntos_user, "puntos_base": PUNTOS_BASE},
+        )
 
     elif request.method == "POST":
         errores, valores, addattr, res, date_obj = validar_form.validar_formulario(request, puntos_user)
@@ -118,7 +123,14 @@ def agregar_encuesta(request):
             return HttpResponseRedirect(request.path_info)
         else:
 
-            info = {"errores": errores, "valores": valores, "addattr": addattr, "puntos_disp": puntos_user, "puntos": puntos_user}
+            info = {
+                "errores": errores,
+                "valores": valores,
+                "addattr": addattr,
+                "puntos_disp": puntos_user,
+                "puntos": puntos_user,
+                "puntos_base": PUNTOS_BASE,
+            }
 
             return render(request, "encuestas/formulario.html", info)
 

@@ -18,11 +18,13 @@ function minDate() {
 }
 
 function updatePoints() {
-    let puntosTotales = $('#puntos')[0].value;
+    let puntosElement = $('#puntos')[0]
+    let puntosTotales = puntosElement.value;
     let respNes = $('#respuestas-necesarias')[0].value;
     if (respNes == 0){
         $('#puntos-x-resp')[0].innerHTML = 'Se darán - puntos por respuesta.';
     } else {
-        $('#puntos-x-resp')[0].innerHTML = 'Se darán ' + Math.floor(puntosTotales/respNes) + ' puntos por respuesta.';
+        let basepoints = $('#puntos-x-resp')[0].dataset.basepoints
+        $('#puntos-x-resp')[0].innerHTML = 'Se darán ' + (Math.floor(puntosTotales/respNes) + Number(basepoints)) + ' puntos por respuesta.';
     }
 }

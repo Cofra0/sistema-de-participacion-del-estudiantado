@@ -60,7 +60,7 @@
                         <label for="respuestas-necesarias" class="form-label">Cantidad mínima de respuestas necesarias</label>
                         <input value="{{valores.respuestas_necesarias}}" class="form-control form-control-sm {{addattr.respuestas_necesarias}}" type="number" name="respuestas-necesarias" min="1" id="respuestas-necesarias" required onchange="updatePoints()">
                         <div id="error-respuestas-necesarias" class="invalid-feedback">{{errores.respuestas_necesarias}}</div>
-                        <div id="puntos-x-resp" name="puntos-x-resp" class="text-secondary"></div>
+                        <div id="puntos-x-resp" name="puntos-x-resp" class="text-secondary" data-basepoints="{{puntos_base}}"></div>
                     </div>
                 </div>
             </div>

@@ -43,7 +43,7 @@ function validate() {
         error.innerHTML = '';
         div.classList.remove("is-invalid");
     }
-
+    
     error = document.getElementById("error-puntos");
     div = document.getElementById("puntos");
     if (puntos.value == '' || isNaN(puntos.value) || !Number.isInteger(Number(puntos.value)) || Number(puntos.value) < 0) {
@@ -51,7 +51,7 @@ function validate() {
         div.classList.add("is-invalid");
         state = false;
     } 
-    else if (puntos.value > puntos.max) {
+    else if (Number(puntos.value) > Number(puntos.max)) {
         error.innerHTML = 'Puntos superan el máximo disponible.';
         div.classList.add("is-invalid");
         state = false;

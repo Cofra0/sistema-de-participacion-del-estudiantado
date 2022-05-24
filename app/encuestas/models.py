@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+#from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.models import User
 
@@ -57,7 +58,7 @@ class Encuesta(models.Model):
         De otra forma se retornará el campo "activa" de la BBDD.
         """
         # Primero cachar si hay plazo
-        if self.plazo < datetime.now():
+        if self.plazo < datetime.now(self.plazo.tzinfo):
             # No hay plazo, se cierra la encuesta.
             self.closing_survey()
             return False

@@ -145,13 +145,26 @@ def get_status_json(request, link):
 @login_required
 def encuestas(request):  # the index view
 
-    puntos = Persona.objects.get(user=request.user).puntos
+    
 
     encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
         "-puntos_encuesta"
     )  # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
+
+    # Se realiza el filtro adicional
+    for encuesta in encuestasDisponibles:
+        encuesta.active
+
+    # Se vuelve a hacer la query
+    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
+        "-puntos_encuesta"
+    )  
     encuestas = list(encuestasDisponibles.values())
 
+    # Estarán actualizados si se cerró la encuesta
+    puntos = Persona.objects.get(user=request.user).puntos
+    
+        
     for i in range(len(encuestas)):
         encuestas[i]["plazo"] = (
             encuestasDisponibles[i].plazo - datetime.now(timezone.utc)

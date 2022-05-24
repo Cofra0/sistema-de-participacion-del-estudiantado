@@ -47,3 +47,9 @@ dev@DCC ~/.docker/ $ docker-compose up -d --build
 dev@DCC ~/.docker/ $ docker exec django python manage.py migrate
 dev@DCC ~/.docker/ $ docker exec -it django python manage.py createsuperuser
 ```
+### Links encuestas ejemplo
+
+https://forms.gle/CKRFW9gjEKcCh3Rx5
+https://forms.gle/tMByeGjx24V8QHGG7
+https://docs.google.com/forms/d/e/1FAIpQLSenkP4BXTdQlDT2EycmcP4bIajaSKsjDH3IgJfMZ_1Ysw-7Iw/viewform
+https://docs.google.com/forms/d/e/1FAIpQLSdcaf5neIBNI2hBvDFLFQPeJ4czRDksUE9SCxcSZDwmI6WhqQ/viewform

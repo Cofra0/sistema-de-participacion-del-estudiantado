@@ -147,3 +147,7 @@ header .user_name span{
 .close_session_nv{
     display: none;
 }
+
+#imagen_logo {
+    vertical-align: baseline !important;
+}

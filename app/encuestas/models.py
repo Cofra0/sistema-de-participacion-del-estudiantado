@@ -112,11 +112,14 @@ def givePoints(sender, instance, created, **kwargs):
         persona.save()  # guardamos los cambios
 
 
-def setBasePoints(survey, base_points):
+def setSurveyPointsToZero(survey):
     """
-    Método que establece la cantidad de puntos a la cantidad base
+    Método que establece la cantidad de puntos a dar en 0
+    Esto establece la cantidad dada a la base ya que esta
+    se entrega a través del objeto de respuesta al
+    usuario
     """
-    survey.puntos_encuesta = base_points
+    survey.puntos_encuesta = 0
     survey.save()
 
 
@@ -124,10 +127,10 @@ def setBasePoints(survey, base_points):
 def discountSurveyPoints(sender, instance, created, **kwargs):
     survey = instance.encuesta
     actual_survey_points = survey.puntos_totales
-    if created and actual_survey_points >= 0:  # Verificamos que no se hayan acabado los puntos de la encuesta
-        points_to_discount = instance.puntos  # Obtenemos los puntos a ser descontados
+    if created and actual_survey_points > 0:  # Verificamos que no se hayan acabado los puntos de la encuesta
+        points_to_discount = survey.puntos_encuesta  # Obtenemos los puntos a ser descontados
         new_points = actual_survey_points - points_to_discount
         if new_points == 0:  # Se acabaron los puntos y debemos setearlo a lo base
-            setBasePoints(survey, 1)  # Por ahora los puntos base son 10 puntos
+            setSurveyPointsToZero(survey)  # Los puntos base se dan en la vista, por lo cual acá lo seteamos a 0
         survey.puntos_totales = new_points
         survey.save()

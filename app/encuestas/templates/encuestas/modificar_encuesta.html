@@ -50,7 +50,9 @@
                 <textarea class="form-control form-control-sm {{addattr.descripcion}}" name="descripcion" id="descripcion" rows="3" placeholder="La encuesta busca ..." required>{{encuesta.descripcion}}</textarea>
                 <div id="error-descripcion" class="invalid-feedback">{{errores.descripcion}}</div>
             </div>
-
+            
+            <!-- Sólo se pueden añadir puntos si es que la encuesta da más de 0-->
+            {% if encuesta.puntos_encuesta > 0 %}
             <div class="container mb-4">
                 <div class="row">
                     <div class="col-sm" id="div-puntos">
@@ -69,6 +71,10 @@
                         </div>
                 </div>
             </div>
+
+            {% else %}
+            <input value="0" name="puntos" id="puntos" hidden>
+            {% endif %}
 
             <div class="container mb-4">
                 <div class="row">
@@ -122,26 +128,27 @@
             currentPoints()
         };
         function currentPoints() {
-	        var elementValue = document.getElementById("puntos").value;
-            var additional_responses = Math.floor(elementValue/{{encuesta.puntos_encuesta}});
-            var to_add = {{encuesta.puntos_encuesta}}*additional_responses;
-            var valid_points = elementValue<={{puntos}};
-            var reward = {{encuesta.puntos_encuesta}} + {{encuesta.base_points}};
+            if ({{encuesta.puntos_encuesta}}>0){
+                var elementValue = document.getElementById("puntos").value;
+                var additional_responses = Math.floor(elementValue/{{encuesta.puntos_encuesta}});
+                var to_add = {{encuesta.puntos_encuesta}}*additional_responses;
+                var valid_points = elementValue<={{puntos}};
+                var reward = {{encuesta.puntos_encuesta}} + {{encuesta.base_points}};
 
-            if (additional_responses<=0 || !valid_points){
-                if (additional_responses ==0){
-                    document.getElementById("add-points").innerHTML = `No se añaden puntos, valor insuficiente`;}
-                else if (additional_responses<0){
-                    document.getElementById("add-points").innerHTML = `Puntos no pueden ser negativos`;
+                if (additional_responses<=0 || !valid_points){
+                    if (additional_responses ==0){
+                        document.getElementById("add-points").innerHTML = `No se añaden puntos, valor insuficiente`;}
+                    else if (additional_responses<0){
+                        document.getElementById("add-points").innerHTML = `Puntos no pueden ser negativos`;
+                    }
+                    else{
+                        document.getElementById("add-points").innerHTML = `No posees dicha cantidad de puntos`;
+                    }
                 }
                 else{
-                    document.getElementById("add-points").innerHTML = `No posees dicha cantidad de puntos`;
+                    document.getElementById("add-points").innerHTML = `Se añadirán ${to_add} puntos, equivalente a ${reward} puntos para ${additional_responses} respuestas`;
                 }
             }
-            else{
-                document.getElementById("add-points").innerHTML = `Se añadirán ${to_add} puntos, equivalente a ${reward} puntos para ${additional_responses} respuestas`;
-            }
-            
         }
     </script>
     {%endif%}

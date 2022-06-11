@@ -235,12 +235,16 @@ def modificar_encuesta(request):
 
         if len(errores) == 0:
 
-            # Calculo de los puntos para que no sobren
+            # Calculo de los puntos para que no sobren, solamente si la encuesta ya daba más que los puntos base
 
-            respuestas_extra = floor(int(valores["puntos"]) / encuesta.puntos_encuesta)
-            puntos_extra = respuestas_extra * encuesta.puntos_encuesta
+            if encuesta.puntos_encuesta>0:
+                respuestas_extra = floor(int(valores["puntos"]) / encuesta.puntos_encuesta)
+                puntos_extra = respuestas_extra * encuesta.puntos_encuesta
+                
+            else:
+                puntos_extra = 0
+
             nuevo_total = puntos_extra + encuesta.puntos_totales
-
             # Se descuentan los puntos del usuario
             persona.puntos -= puntos_extra
 

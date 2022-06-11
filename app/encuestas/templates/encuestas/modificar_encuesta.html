@@ -1,0 +1,148 @@
+{% extends "encuestas/base.html" %}
+
+{% load static %}
+
+<!DOCTYPE html>
+    <meta charset="UTF-8">
+
+    {% block links %} 
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/img/bootstrap-icons-1.8.1/bootstrap-icons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" media="screen" />
+    
+    <script src="{% static '/js/jquery-3.6.0.js' %}"></script>
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/js/validador.js' %}"></script>
+
+    {% endblock %}
+
+    {% block title %} Modificar encuesta {% endblock %}
+
+    {% block cls_encuestas %}{% endblock %}
+    {% block cls_encuesta %}{% endblock %}
+    {% block cls_publicar %}{% endblock %}
+
+   
+{% block content %}
+    {%if error%}
+        <div class = "custom-container container">Ha habido un error: Link inválido o encuesta caducada</div>
+    {% else %} 
+    <div class="custom-container container">
+        
+        {% include 'encuestas/messages.html' %}
+
+        <div class="title">Modificar encuesta</div>
+
+        <form id="form" name="form" method="post" action="{% url 'encuestas:modificar_encuesta'%}" enctype="multipart/form-data" onsubmit="return validate_update()">
+            
+            {% csrf_token %}
+            <input type="text" name="id" id="id" value="{{ encuesta.id }}" hidden>
+            <div class="container mb-4" id="div-nombre">
+                <label for="nombre" class="form-label">Nombre de la encuesta</label>
+                <input value="{{encuesta.nombre}}" type="text" class="form-control form-control-sm {{addattr.nombre}}" name="nombre" id="nombre" placeholder="Ej: Hábitos de sueño" required>
+                <div id="error-nombre" class="invalid-feedback">{{errores.nombre}}</div>
+            </div>
+
+            <div class="container mb-4" id="div-descripcion">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea class="form-control form-control-sm {{addattr.descripcion}}" name="descripcion" id="descripcion" rows="3" placeholder="La encuesta busca ..." required>{{encuesta.descripcion}}</textarea>
+                <div id="error-descripcion" class="invalid-feedback">{{errores.descripcion}}</div>
+            </div>
+
+            <div class="container mb-4">
+                <div class="row">
+                    <div class="col-sm" id="div-puntos">
+                        <label for="puntos" class="form-label">Añadir puntos totales</label>
+                        <input value="0" class="form-control form-control-sm {{addattr.puntos}}" type="number" min="0" max="{{puntos}}" name="puntos" id="puntos" required onchange="currentPoints()">
+                        <div id="error-puntos" class="invalid-feedback">{{errores.puntos}}</div>
+                        <div class="text-secondary"><p>
+                             Actualmente se reparten {{encuesta.reward_points}} 
+                             {%if encuesta.puntos_totales > 0 %}
+                             ({{encuesta.puntos_encuesta}} + 1 punto base) puntos por respuesta.
+                             {%else%}
+                             (1 punto base) puntos por respuesta.
+                             {%endif%}
+                              La encuesta posee un total de {{encuesta.puntos_totales}}.</p>
+                             <p id='add-points'></p></div>
+                        </div>
+                </div>
+            </div>
+
+            <div class="container mb-4">
+                <div class="row">
+                    <div class="col-sm" id="div-fecha-termino">
+                        <label for="fecha-termino" class="form-label">Fecha de término</label>
+                        <div class="input-group input-group-sm date">
+                            <label for="fecha-termino" class="input-group-sm">
+                                <span class="input-group-text">
+                                    <span class="bi-calendar"></span>
+                                </span>
+                            </label>
+                            <input value="{{encuesta.fecha_termino}}" type='date' class="{{addattr.fecha_termino}} form-control" id="fecha-termino" name="fecha-termino" onfocusout="minDate()" required>
+                        </div>
+                        <div id="error-fecha-termino" class="invalid-feedback"
+                        {% if errores.fecha_termino %}
+                            style="display: block;"
+                        {% endif %}
+                        >{{errores.fecha_termino}}</div>
+                    </div>
+                    <div class="col-sm {{addattr.hora_termino}}" id="div-hora-termino">
+                        <label for="hora-termino" class="form-label">Hora de término</label>
+                        <div class="input-group input-group-sm">
+                            <label for="hora-termino" class="input-group-sm">
+                                <span class="input-group-text">
+                                    <span class="bi-clock"></span>
+                                </span>
+                            </label>
+                            <input type='time' class="form-control {{addattr.hora_termino}}" name="hora-termino" id="hora-termino" value="{{encuesta.hora_termino}}">
+                        </div>
+                        <div id="error-hora-termino" class="invalid-feedback"
+                        {% if errores.hora_termino %}
+                            style="display: block;"
+                        {% endif %}
+                        >{{errores.hora_termino}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container text-center">
+                <button type="submit" class="btn btn-primary">Modificar Encuesta</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static '/js/input.js' %}">
+        
+    </script>
+    <script>
+        window.addEventListener("load", myInit, true);
+        function myInit() {
+            currentPoints()
+        };
+        function currentPoints() {
+	        var elementValue = document.getElementById("puntos").value;
+            var additional_responses = Math.floor(elementValue/{{encuesta.puntos_encuesta}});
+            var to_add = {{encuesta.puntos_encuesta}}*additional_responses;
+            var valid_points = elementValue<={{puntos}};
+            var reward = {{encuesta.puntos_encuesta}} + {{encuesta.base_points}};
+
+            if (additional_responses<=0 || !valid_points){
+                if (additional_responses ==0){
+                    document.getElementById("add-points").innerHTML = `No se añaden puntos, valor insuficiente`;}
+                else if (additional_responses<0){
+                    document.getElementById("add-points").innerHTML = `Puntos no pueden ser negativos`;
+                }
+                else{
+                    document.getElementById("add-points").innerHTML = `No posees dicha cantidad de puntos`;
+                }
+            }
+            else{
+                document.getElementById("add-points").innerHTML = `Se añadirán ${to_add} puntos, equivalente a ${reward} puntos para ${additional_responses} respuestas`;
+            }
+            
+        }
+    </script>
+    {%endif%}
+{% endblock %}

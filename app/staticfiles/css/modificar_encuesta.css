@@ -1,0 +1,26 @@
+body{
+    background: #222a38;
+}
+
+.field{
+    text-align: left;
+}
+
+.container {
+    background-color: white;
+}
+input, select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+    width: 30%;
+}
+
+.container.custom-container {
+    padding: 4em;
+    margin: 40px;
+    margin-left: 20%;
+    margin-right: 20%;
+    border-radius: 20px;
+    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.55);
+}

@@ -11,7 +11,7 @@ from django.contrib import messages
 from encuestas.models import Encuesta, Persona, Responde
 from datetime import datetime, timezone
 from django.core.paginator import Paginator
-
+from math import floor
 
 # from django.contrib.auth import authenticate, login, logout
 
@@ -38,7 +38,7 @@ def encuesta_seleccionada(request):
         "nombre": encuesta.nombre,
         "descripcion": encuesta.descripcion,
         "link": link,
-        "puntos_encuesta": encuesta.puntos_encuesta + PUNTOS_BASE,
+        "puntos_encuesta": encuesta.reward_points, #encuesta.puntos_encuesta + PUNTOS_BASE,
         "puntos": puntos_user,
     }
 
@@ -53,12 +53,14 @@ def encuesta_seleccionada(request):
             puntos_encuesta = encuesta.puntos_encuesta
             fecha = datetime.now().strftime("%Y-%m-%d")
 
-            # Guardamos los dato de haber respondido
-            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=puntos_encuesta + PUNTOS_BASE)
+            # Guardamos los datos de haber respondido
+            recompensa = encuesta.reward_points
+            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=recompensa #puntos_encuesta + PUNTOS_BASE
+            )
             responde.save()
 
             # Devolver vista principal. con algún mensaje de éxito?
-            messages.success(request, f"Has reclamado {str(puntos_encuesta + PUNTOS_BASE)} puntos")
+            messages.success(request, f"Has reclamado {str(recompensa)} puntos")
             return HttpResponseRedirect(request.path_info + "?id=" + str(id_encuesta))
 
         elif str(hash) == str(encuesta.hash) and Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
@@ -178,7 +180,8 @@ def encuestas(request):  # the index view
         encuestas[i]["participantes"] = encuestasDisponibles[
             i
         ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
-        encuestas[i]["puntos_encuesta"] = encuestasDisponibles[i].puntos_encuesta + PUNTOS_BASE
+        #encuestas[i]["puntos_encuesta"] = encuestasDisponibles[i].puntos_encuesta + PUNTOS_BASE
+        encuestas[i]["puntos_encuesta"] = encuestasDisponibles[i].reward_points
 
     paginator = Paginator(encuestas, 15)  # Mostramos 15 encuestas por pagina
 
@@ -200,3 +203,77 @@ def mis_encuestas(request):
 def encuesta_prueba(request):
     puntos = Persona.objects.get(user=request.user).puntos
     return render(request, "encuestas/encuesta_prueba.html", {"puntos": puntos})
+
+
+@login_required
+def modificar_encuesta(request):
+    user = request.user
+    persona = Persona.objects.get(user=user)
+    puntos = persona.puntos
+    encuesta = []
+    error = False
+    try:
+        if request.method == "GET":
+            id_encuesta = int(request.GET["id"])
+        elif request.method == "POST":
+            id_encuesta = int(request.POST["id"])
+    except:
+        id_encuesta = -1
+
+
+    # Por si se ponen a jugar con la url
+    try:
+        encuesta = Encuesta.objects.get(id=id_encuesta, creador=user, activa=True)
+
+        # Actualizar estado por si las moscas, habrá error si la encuesta se desactiva
+        error = not encuesta.active
+
+    except:
+        error = True
+
+    # Se abre la página
+    if request.method == "GET":
+        return render(request, "encuestas/modificar_encuesta.html", {"puntos": puntos, "error": error, "encuesta": encuesta})
+
+    elif request.method == "POST":
+        errores, valores, addattr, res, date_obj = validar_form.validar_actualizacion(request, puntos)
+
+        if len(errores) == 0:
+
+            # Calculo de los puntos para que no sobren
+
+            respuestas_extra  = floor(int(valores["puntos"])/encuesta.puntos_encuesta)
+            puntos_extra = respuestas_extra*encuesta.puntos_encuesta
+            nuevo_total = puntos_extra + encuesta.puntos_totales
+
+            # Se descuentan los puntos del usuario
+            persona.puntos -= puntos_extra
+
+            # Se actualiza la encuesta
+            encuesta.nombre = valores['nombre']
+            encuesta.puntos_totales =  nuevo_total
+            encuesta.descripcion = valores["descripcion"]
+            encuesta.plazo = date_obj
+
+            encuesta.save()
+        
+
+            # Se guardan los cambios del usuario
+            persona.save()
+
+            # Devolver vista principal. con algún mensaje de éxito?
+            messages.success(request, "Se guardaron los cambios")
+            return HttpResponseRedirect(request.path_info + "?id=" + str(id_encuesta))
+        else:
+
+            info = {
+                "errores": errores,
+                "valores": valores,
+                "addattr": addattr,
+                "puntos_disp": puntos,
+                "puntos": puntos,
+            }
+
+            return render(request, "encuestas/modificar_encuesta.html", info)
+
+

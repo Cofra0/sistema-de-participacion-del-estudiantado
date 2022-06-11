@@ -1,0 +1,29 @@
+{% extends "encuestas/base.html" %}
+{% load static %} 
+{% block title %} Modificar Encuesta {% endblock %}
+
+{% block links %} 
+<link rel="stylesheet" type="text/css" href="{% static 'css/modificar_encuesta.css' %}" media="screen" />
+{% endblock %}
+
+{% block content %}
+<div class="custom-container container">
+    <form id="form" method="post" action="{% url 'encuestas:modificar_encuesta' %}"
+        enctype="multipart/form-data" onsubmit="return validate()">
+
+        <div class="field" id="div-nombre">
+            <div>Nombre de la encuesta</div>
+                <input value="{{valores.nombre}}" type="text" class="form-control form-control-sm {{addattr.nombre}}" 
+                name="nombre" id="nombre" placeholder="Ej: Hábitos de sueño" required>
+            <div id="error-nombre" class="invalid-feedback">{{errores.nombre}}</div>
+        </div>
+
+
+        {% csrf_token %}
+        <div class="container text-center">
+            <button type="submit" class="btn btn-primary">Publicar Encuesta</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

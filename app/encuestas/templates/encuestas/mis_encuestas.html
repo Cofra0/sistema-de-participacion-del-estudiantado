@@ -10,6 +10,7 @@
 {% block cls_encuestas %}{% endblock %}
 {% block cls_encuesta %}active{% endblock %}
 {% block cls_publicar %}{% endblock %}
+{% block cls_manual %}{% endblock %}
 
 {% block content %}
 <section class="user_data">
@@ -28,7 +29,7 @@
                 </tr> 
                 <tr>
                     <th class="resumen_data">Encuestas Publicadas</th>
-                    <td class="dato">3</td>
+                    <td class="dato">{{ cantidad_publicadas }}</td>
                 </tr>
                 <tr>
                     <th class="resumen_data">Puntos Ganados</th>
@@ -55,7 +56,7 @@
                         <th scope="col" class="poll_name">Nombre</th>
                         <th scope="col" class="poll_time">Plazo</th>
                         <th scope="col" class="poll_answers">Respondidas</th>
-                        <th scope="col" class="poll_points">Puntos Recompensa</th>
+                        <th scope="col" class="poll_points">Recompensa Ofrecida por Respuesta</th>
                         <th scope="col" class="poll_total_points">Puntos Restantes</th>
                         <th scope="col" class="poll_status">Estado</th>
                         <th scope="col" class="poll_actualizar"></th>
@@ -64,56 +65,28 @@
                     </tr>
                 </thead>
                 <tbody class="polls">
+                    {% for publicada in publicadas %}
                     <tr>
-                        <th class="poll_name">Encuesta1</th>
-                        <td class="poll_time">1d</td>
-                        <td class="poll_answers">12/20</td>
-                        <td class="poll_points">12</td>
-                        <td class="poll_total_points">123</td>
-                        <td class="poll_status">Abierta</td>
-                        <td class="poll_actualizar"><a href="">Actualizar</a></td>
-                        <td class="poll_close"><a href="">Cerrar</a></td>
+                        <th class="poll_name">{{publicada.nombre}}</th>
+                        <td class="poll_time">{{publicada.plazo}}</td>
+                        <td class="poll_answers">{{publicada.participantes}}</td>
+                        <td class="poll_points">{{publicada.puntos_encuesta}}</td>
+                        <td class="poll_total_points">{{publicada.puntos_totales}}</td>
+                        <td class="poll_status">
+                            {% if publicada.activa %}
+                                Abierta
+                            {% else %}
+                                Cerrada
+                            {% endif %}
+                        </td>
+                        <td class="poll_actualizar"><a href="">Modificar</a></td>
+                        <td class="poll_close">
+                            {% if publicada.activa %}
+                                <a href="">Cerrar</a>
+                            {% endif %}
+                        </td>
                     </tr>
-                    <tr>
-                        <th class="poll_name">Encuesta2</th>
-                        <td class="poll_time">7h</td>
-                        <td class="poll_answers">12/20</td>
-                        <td class="poll_points">12</td>
-                        <td class="poll_total_points">123</td>
-                        <td class="poll_status">Abierta</td>
-                        <td class="poll_actualizar"><a href="">Actualizar</a></td>
-                        <td class="poll_close"><a href="">Cerrar</a></td>
-                    </tr>
-                    <tr>
-                        <th class="poll_name">Encuesta3</th>
-                        <td class="poll_time">1d</td>
-                        <td class="poll_answers">12/20</td>
-                        <td class="poll_points">11</td>
-                        <td class="poll_total_points">123</td>
-                        <td class="poll_status">Cerrada</td>
-                        <td class="poll_actualizar"><a href="">Actualizar</a></td>
-                        <td class="poll_close"><a href="">Cerrar</a></td>
-                    </tr>
-                    <tr>
-                        <th class="poll_name">Encuesta4</th>
-                        <td class="poll_time">1d</td>
-                        <td class="poll_answers">12/20</td>
-                        <td class="poll_points">10</td>
-                        <td class="poll_total_points">123</td>
-                        <td class="poll_status">Abierta</td>
-                        <td class="poll_actualizar"><a href="">Actualizar</a></td>
-                        <td class="poll_close"><a href="">Cerrar</a></td>
-                    </tr>
-                    <tr>
-                        <th class="poll_name">Encuesta5</th>
-                        <td class="poll_time">1d</td>
-                        <td class="poll_answers">12/20</td>
-                        <td class="poll_points">10</td>
-                        <td class="poll_total_points">123</td>
-                        <td class="poll_status">Cerrada</td>
-                        <td class="poll_actualizar"><a href="">Actualizar</a></td>
-                        <td class="poll_close"><a href="">Cerrar</a></td>
-                    </tr>                
+                    {% endfor %}               
                 </tbody>
             </table>
             
@@ -135,7 +108,7 @@
                     </tr>
                 </thead>
                 <tbody class="polls">
-                    {% for respondida in respondidas%}
+                    {% for respondida in respondidas %}
                     <tr>
                         <th class="poll_name_2">{{respondida.encuesta.nombre}}</th>   
                         <td class="poll_points_2"><div class="pts1">{{respondida.puntos}}</div></td>

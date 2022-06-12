@@ -86,7 +86,29 @@
                         </td>
                         <td class="poll_close">
                             {% if publicada.activa %}
-                                <a href="/cerrar_encuesta/?id={{publicada.id}}">Cerrar</a>          
+                            <div id="myModal" class="modal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <span class="close">&times;</span>
+                                    <h2>Cierre de encuesta</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Está a punto de cerrar la encuesta: {{publicada.nombre}} </p>
+                                        <p>Esta acción le devolverá la siguiente cantidad de puntos: {{publicada.puntos_totales}}</p>
+                                        <p>Tenga en cuenta que esta acción es irreversible. Si quiere que su encuesta sea visible en la página, tendrá que publicarla de nuevo.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h3>Cerrar encuesta?</h3>
+                                        <button type="button" style="cursor:pointer;" class="publicar_encuesta_btn" id="send-button" 
+                                            onclick="location.href= '/cerrar_encuesta/?id={{publicada.id}}'">
+                                            Cerrar encuesta
+                                        </button>
+                                        <button type="button" style="cursor:pointer;" id="close-button" class="back_btn">Volver</button>
+                                    </div>
+                                </div>
+                              </div>
+                                <a id="close_survey" href="#">Cerrar</a>
+                                <!--<a href="/cerrar_encuesta/?id={{publicada.id}}">Cerrar</a>-->          
                             {% endif %}
                         </td>
                     </tr>
@@ -131,5 +153,40 @@
 
 </section>
 
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("close_survey");
+
+    // Get the buttons that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    var close_btn = document.getElementById("close-button");
+
+    // Get the send button
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+        return false;
+    }
+
+    close_btn.onclick = function(){
+        modal.style.display = "none";
+        return false;
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+    modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+    }
+</script>
 
 {% endblock %}

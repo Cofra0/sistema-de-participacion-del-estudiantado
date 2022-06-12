@@ -150,13 +150,12 @@ def encuestas(request):  # the index view
     encuestasDisponibles = sorted(Encuesta.objects.filter(activa=True), key=lambda t: t.reward_points, reverse=True)
     #encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
     #    "-puntos_encuesta"
-    #)  # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
-    print(encuestasDisponibles)
+    # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
     # Se realiza el filtro adicional
     for encuesta in encuestasDisponibles:
         encuesta.active
 
-    encuestas = [x.__dict__ for x in encuestasDisponibles]
+    encuestas = [{**x.__dict__, 'reward_points': x.reward_points, 'participantes': x.participantes.count() } for x in encuestasDisponibles]
 
     # Estarán actualizados si se cerró la encuesta
     puntos = Persona.objects.get(user=request.user).puntos
@@ -176,11 +175,7 @@ def encuestas(request):  # the index view
             encuestas[i]["plazo"] = "{:02}:{:02}m".format(int(minutes), int(seconds))
         else:
             encuestas[i]["plazo"] = "{:02}s".format(int(seconds))
-        encuestas[i]["participantes"] = encuestasDisponibles[
-            i
-        ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
-        # encuestas[i]["puntos_encuesta"] = encuestasDisponibles[i].puntos_encuesta + PUNTOS_BASE
-        encuestas[i]["puntos_encuesta"] = encuestasDisponibles[i].reward_points
+        encuestas[i]["puntos_encuesta"] = encuestas[i]['reward_points']
 
     paginator = Paginator(encuestas, 15)  # Mostramos 15 encuestas por pagina
 
@@ -200,7 +195,8 @@ def mis_encuestas(request):
         encuesta.active
 
     publicadas = publicadas.order_by('-activa')
-    encuestas_publicadas = list(publicadas.values())
+    encuestas_publicadas = [{**x.__dict__, 'reward_points': x.reward_points, 'participantes': x.participantes.count()} for x in publicadas ]
+    #encuestas_publicadas = list(publicadas.values())
 
     respondidas = Responde.objects.filter(usuario=request.user).order_by("-puntos")
 
@@ -226,10 +222,6 @@ def mis_encuestas(request):
             encuestas_publicadas[i]["plazo"] = "{:02}:{:02}m".format(int(minutes), int(seconds))
         else:
             encuestas_publicadas[i]["plazo"] = "{:02}s".format(int(seconds))
-        encuestas_publicadas[i]["participantes"] = publicadas[
-            i
-        ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
-        encuestas_publicadas[i]["puntos_encuesta"] = publicadas[i].puntos_encuesta
 
     return render(
         request,

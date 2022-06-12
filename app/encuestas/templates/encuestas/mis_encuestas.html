@@ -1,0 +1,131 @@
+{% extends "encuestas/base.html" %}
+{% load static %}
+
+{% block title %} Mis Encuestas {% endblock %}
+
+{% block links %} 
+<link rel="stylesheet" type="text/css" href="{% static 'css/mis_encuestas.css' %}" media="screen" />
+{% endblock %}
+
+{% block cls_encuestas %}{% endblock %}
+{% block cls_encuesta %}active{% endblock %}
+{% block cls_publicar %}{% endblock %}
+{% block cls_manual %}{% endblock %}
+
+{% block content %}
+<section class="user_data">
+    <div class="data">
+
+        <div class="resumen">
+            <div class="resumen_title">Resumen de Uso</div>
+            <div class="resumen_user">
+                Usuario: {{ user.first_name }}
+            </div>
+
+            <table class="resumen_points">
+                <tr class="rp">
+                    <th class="resumen_data">Puntos Disponibles</th> 
+                    <td class="dato">{{ puntos }}</td>
+                </tr> 
+                <tr>
+                    <th class="resumen_data">Encuestas Publicadas</th>
+                    <td class="dato">{{ cantidad_publicadas }}</td>
+                </tr>
+                <tr>
+                    <th class="resumen_data">Puntos Ganados</th>
+                    <td class="dato">{{ puntos_ganados.puntos__sum }}</td>
+                </tr>
+                <tr>
+                   <th class="resumen_data">Encuestas Contestadas</th> 
+                   <td class="dato">{{ cantidad_contestadas }}</td>
+                </tr>
+               
+                
+                
+            </table>
+        </div>
+        
+        
+        
+        <div class="publicadas">
+            <div class="publicadas_title">Encuestas Publicadas</div>
+            
+            <table class="mis_encuestas">
+                <thead class="parameters">
+                    <tr>
+                        <th scope="col" class="poll_name">Nombre</th>
+                        <th scope="col" class="poll_time">Plazo</th>
+                        <th scope="col" class="poll_answers">Respondidas</th>
+                        <th scope="col" class="poll_points">Recompensa Ofrecida por Respuesta</th>
+                        <th scope="col" class="poll_total_points">Puntos Restantes</th>
+                        <th scope="col" class="poll_status">Estado</th>
+                        <th scope="col" class="poll_actualizar"></th>
+                        <th scope="col" class="poll_close"></th>
+                        
+                    </tr>
+                </thead>
+                <tbody class="polls">
+                    {% for publicada in publicadas %}
+                    <tr>
+                        <th class="poll_name">{{publicada.nombre}}</th>
+                        <td class="poll_time">{{publicada.plazo}}</td>
+                        <td class="poll_answers">{{publicada.participantes}}</td>
+                        <td class="poll_points">{{publicada.puntos_encuesta}}</td>
+                        <td class="poll_total_points">{{publicada.puntos_totales}}</td>
+                        <td class="poll_status">
+                            {% if publicada.activa %}
+                                Abierta
+                            {% else %}
+                                Cerrada
+                            {% endif %}
+                        </td>
+                        <td class="poll_actualizar"><a href="">Modificar</a></td>
+                        <td class="poll_close">
+                            {% if publicada.activa %}
+                                <a href="">Cerrar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}               
+                </tbody>
+            </table>
+            
+        </div>
+        <div class="peb">
+            <a href="/publicar_encuesta" class="publicar_encuesta_btn">Publicar Encuesta</a>
+        </div>
+
+
+        <div class="respondidas">
+            <div class="respondidas_title">
+                Encuestas Contestadas
+            </div>
+            <table class="mis_respondidas">
+                <thead class="parameters">
+                    <tr>
+                        <th scope="col" class="poll_name_2">Nombre</th>
+                        <th scope="col" class="poll_points_2"><div class="pts">PUNTOS RECIBIDOS</div></th>
+                    </tr>
+                </thead>
+                <tbody class="polls">
+                    {% for respondida in respondidas %}
+                    <tr>
+                        <th class="poll_name_2">{{respondida.encuesta.nombre}}</th>   
+                        <td class="poll_points_2"><div class="pts1">{{respondida.puntos}}</div></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="back">
+            <a href="/encuestas" class="back_btn">Inicio</a>
+        </div>
+
+
+    </div>
+
+</section>
+
+
+{% endblock %}

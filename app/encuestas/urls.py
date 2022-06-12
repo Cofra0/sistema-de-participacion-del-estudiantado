@@ -11,4 +11,5 @@ urlpatterns = [
     path("encuesta_prueba/", views.encuesta_prueba, name="encuesta"),
     path("encuesta/", views.encuesta_seleccionada, name="encuesta"),
     path("modificar_encuesta/", views.modificar_encuesta, name="modificar_encuesta"),
+    path("manual/", views.manual, name="manual"),
 ]

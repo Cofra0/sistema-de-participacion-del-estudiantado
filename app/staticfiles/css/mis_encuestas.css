@@ -1,0 +1,232 @@
+body{
+    background: #eef0f5;
+    
+}
+
+.user_data{
+    padding: 5% 15% 5% 15%;
+}
+
+.data{
+    background: #ffffff;
+    padding: 2% 4% 2% 4%;
+    border-radius: 0.5rem;
+    border: 1px solid #d0d7de;
+}
+
+
+
+/* Seccion resumen usuario */
+.resumen{
+    margin-bottom: 5em;
+}
+
+.resumen_title{
+    color: #fffbc4;
+    background: #222a38;
+    text-align: center;
+    font-size: 30px;
+    border-radius: 0.5rem;
+    padding: 1%;
+    margin: 0 0 .5em 0;
+}
+
+.resumen_user{
+    font-size: 32px;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.resumen_points{
+    margin: 0 auto; 
+
+}
+
+
+.resumen_data{
+    font-size: 22px;
+    padding-right: .5em;
+    text-align: left;
+}
+
+.dato{
+    text-align: center;
+}
+
+
+
+
+
+
+
+/* Seccion de encuestas publicadas */
+.publicadas{
+    margin-bottom: 2em;
+}
+
+.publicadas_title{
+    color: #fffbc4;
+    background: #222a38;
+    text-align: center;
+    font-size: 30px;
+    border-radius: 0.5rem;
+    padding: 1%;
+    margin: 0 0 .5em 0;
+}
+
+.mis_encuestas{
+    text-align: center;
+    border-collapse: collapse;  
+
+}
+
+.poll_name{
+    width: 25%;
+    padding: 10px 0 10px 0;
+}
+
+.poll_time{
+    width: 10%;
+}
+
+.poll_answers{
+    width: 10%;
+}
+
+.poll_points{
+    width: 10%;
+}
+
+.poll_total_points{
+    width: 10%;
+}
+
+.poll_status{
+    width: 10%;
+}
+
+.poll_actualizar{
+    width: 10%;
+}
+
+.poll_close{
+    width: 10%;
+}
+
+
+.parameters{
+    background: gray;
+}
+
+.parameters .poll_name{
+    border-radius: .5rem  0 0 .5rem;
+}
+
+.parameters .poll_close{
+    border-radius: 0 .5rem  .5rem 0;
+    
+}
+
+.polls tr:nth-child(even){
+    background: rgb(224, 224, 224);
+}
+
+.polls tr:nth-child(odd){
+    background: rgb(202, 202, 202);
+}
+
+tr {
+    border-bottom: 2px solid white;
+}
+
+
+
+
+.peb{
+    width: 100%;
+    margin-bottom: 5em;
+    text-align: right;
+}
+
+.publicar_encuesta_btn{
+    color: white;
+    background: #5472ab;
+    font-size: 20px;
+    border-radius: 0.5rem;
+    padding: 10px;
+}
+
+
+/* Seccion de encuestas respondidas */
+.respondidas_title{
+    color: #fffbc4;
+    background: #222a38;
+    text-align: center;
+    font-size: 30px;
+    border-radius: 0.5rem;
+    padding: 1%;
+    margin: 0 0 .5em 0;
+}
+
+.respondidas{
+    text-align: center;
+}
+
+.mis_respondidas{
+    text-align: center;
+    border-collapse: collapse;
+    margin: 0 10%;
+    margin-bottom: 2em;
+}
+
+.parameters .poll_name_2{
+    border-radius: .5rem  0 0 .5rem;
+}
+
+.poll_name_2{
+    width: 20%;
+    padding: 10px 0 10px 0;
+}
+
+.parameters .poll_points_2{
+    border-radius: 0 .5rem  .5rem 0;
+    
+}
+
+.poll_points_2{
+    width: 10%;
+}
+
+th.poll_points_2{
+    padding:10px 30px;
+ }
+ 
+td.poll_points_2{
+    padding:0 70px;
+ }
+
+
+
+.pts1{
+    background: #f5f4ef;
+    border-radius:.5rem;
+    font-size: 1.5rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border: 3px solid rgb(177, 177, 177);
+}
+
+
+
+.back{
+    width: 100%;
+    margin-bottom: 5em;
+    text-align: center;
+}
+
+.back_btn{
+    color: white;
+    background: #5d7298;
+    font-size: 20px;
+    border-radius: 0.5rem;
+    padding: 10px 20px;
+}

@@ -10,6 +10,7 @@ from encuestas import models
 from django.contrib import messages
 from encuestas.models import Encuesta, Persona, Responde
 from datetime import datetime, timezone
+from django.db.models import Sum
 from django.core.paginator import Paginator
 
 
@@ -192,7 +193,10 @@ def encuestas(request):  # the index view
 @login_required
 def mis_encuestas(request):
     puntos = Persona.objects.get(user=request.user).puntos
-    return render(request, "encuestas/missing.html", {"puntos": puntos})
+    respondidas = Responde.objects.filter(usuario=request.user).order_by("-puntos")
+    puntos_ganados = respondidas.aggregate(Sum('puntos'))
+    cantidad_respondidas = respondidas.count()
+    return render(request, "encuestas/mis_encuestas.html", {"puntos": puntos, "puntos_ganados":puntos_ganados, "cantidad_contestadas":cantidad_respondidas, "respondidas": respondidas})
 
 
 # Vista donde la encuesta está incertada
@@ -200,3 +204,10 @@ def mis_encuestas(request):
 def encuesta_prueba(request):
     puntos = Persona.objects.get(user=request.user).puntos
     return render(request, "encuestas/encuesta_prueba.html", {"puntos": puntos})
+
+
+# Vista de manual de usuario
+@login_required
+def manual(request):
+    puntos = Persona.objects.get(user=request.user).puntos
+    return render(request, "encuestas/manual.html", {"puntos": puntos})

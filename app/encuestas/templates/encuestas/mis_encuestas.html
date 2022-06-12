@@ -86,10 +86,10 @@
                         </td>
                         <td class="poll_close">
                             {% if publicada.activa %}
-                            <div id="myModal" class="modal">
+                            <div id="myModal_{{publicada.id}}" class="modal">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                    <span class="close">&times;</span>
+                                    <span id="close_{{publicada.id}}" class="close">&times;</span>
                                     <h2>Cierre de encuesta</h2>
                                     </div>
                                     <div class="modal-body">
@@ -99,16 +99,15 @@
                                     </div>
                                     <div class="modal-footer">
                                         <h3>Cerrar encuesta?</h3>
-                                        <button type="button" style="cursor:pointer;" class="publicar_encuesta_btn" id="send-button" 
+                                        <button type="button" style="cursor:pointer;" class="publicar_encuesta_btn" id="send-button_{{publicada.id}}" 
                                             onclick="location.href= '/cerrar_encuesta/?id={{publicada.id}}'">
                                             Cerrar encuesta
                                         </button>
-                                        <button type="button" style="cursor:pointer;" id="close-button" class="back_btn">Volver</button>
+                                        <button type="button" style="cursor:pointer;" id="close-button_{{publicada.id}}" class="back_btn">Volver</button>
                                     </div>
                                 </div>
-                              </div>
-                                <a id="close_survey" href="#">Cerrar</a>
-                                <!--<a href="/cerrar_encuesta/?id={{publicada.id}}">Cerrar</a>-->          
+                            </div>
+                                <a id="close_survey_{{publicada.id}}" href="#">Cerrar</a>      
                             {% endif %}
                         </td>
                     </tr>
@@ -154,39 +153,32 @@
 </section>
 
 <script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
+    {% for publicada in publicadas%}
+    {% if publicada.activa %}
 
-    // Get the button that opens the modal
-    var btn = document.getElementById("close_survey");
+            document.getElementById(`close_survey_{{publicada.id}}`).onclick = function() {
+                document.getElementById(`myModal_{{publicada.id}}`).style.display = "block";
+                return false;
+            }
 
-    // Get the buttons that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-    var close_btn = document.getElementById("close-button");
+            document.getElementById(`close-button_{{publicada.id}}`).onclick = function(){
+                document.getElementById(`myModal_{{publicada.id}}`).style.display = "none";
+                return false;
+            }
 
-    // Get the send button
+            // When the user clicks on <span> (x), close the modal
+            document.getElementById(`close_{{publicada.id}}`).onclick = function() {
+                document.getElementById(`myModal_{{publicada.id}}`).style.display = "none";
+            }
 
-    btn.onclick = function() {
-        modal.style.display = "block";
-        return false;
-    }
-
-    close_btn.onclick = function(){
-        modal.style.display = "none";
-        return false;
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-    modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-    }
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+            if (event.target == document.getElementById(`myModal_{{publicada.id}}`)) {
+                document.getElementById(`myModal_{{publicada.id}}`).style.display = "none";
+            }
+            }
+        {% endif %}
+    {% endfor %}
 </script>
 
 {% endblock %}

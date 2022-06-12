@@ -147,17 +147,16 @@ def get_status_json(request, link):
 @login_required
 def encuestas(request):  # the index view
 
-    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
-        "-puntos_encuesta"
-    )  # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
-
+    encuestasDisponibles = sorted(Encuesta.objects.filter(activa=True), key=lambda t: t.reward_points, reverse=True)
+    #encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
+    #    "-puntos_encuesta"
+    #)  # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
+    print(encuestasDisponibles)
     # Se realiza el filtro adicional
     for encuesta in encuestasDisponibles:
         encuesta.active
 
-    # Se vuelve a hacer la query
-    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by("-puntos_encuesta")
-    encuestas = list(encuestasDisponibles.values())
+    encuestas = [x.__dict__ for x in encuestasDisponibles]
 
     # Estarán actualizados si se cerró la encuesta
     puntos = Persona.objects.get(user=request.user).puntos
@@ -200,6 +199,7 @@ def mis_encuestas(request):
     for encuesta in publicadas:
         encuesta.active
 
+    publicadas = publicadas.order_by('-activa')
     encuestas_publicadas = list(publicadas.values())
 
     respondidas = Responde.objects.filter(usuario=request.user).order_by("-puntos")

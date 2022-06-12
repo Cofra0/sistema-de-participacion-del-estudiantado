@@ -16,8 +16,10 @@ def get_status_url(url):
     res = {"status": status, "url": url}
     return res
 
+
 # Se usan las mismas validaciones, se pueden separar en pequeñas funciones para modularidad y código más ordenado.
 # No se hace ahora por falta de tiempo uwu
+
 
 def validar_actualizacion(request, puntos_disp):
     nombre = request.POST["nombre"]
@@ -94,6 +96,7 @@ def validar_actualizacion(request, puntos_disp):
 
     res = {}
     return errores, valores, addattr, res, date_obj
+
 
 def validar_formulario(request, puntos_disp):
 

@@ -215,7 +215,7 @@ def modificar_encuesta(request):
         id_encuesta = int(request.GET.get("id", -1))
     elif request.method == "POST":
         id_encuesta = int(request.POST.get("id", -1))
-        
+
     # Por si se ponen a jugar con la url
     try:
         encuesta = Encuesta.objects.get(id=id_encuesta, creador=user, activa=True)
@@ -233,14 +233,15 @@ def modificar_encuesta(request):
     elif request.method == "POST":
         errores, valores, addattr, res, date_obj = validar_form.validar_actualizacion(request, puntos)
 
-        if len(errores) == 0:
+        # No se modifica si hay errores o la encuesta cumplió su plazo al mandar la modificación
+        if len(errores) == 0 and encuesta.active:
 
             # Calculo de los puntos para que no sobren, solamente si la encuesta ya daba más que los puntos base
 
-            if encuesta.puntos_encuesta>0:
+            if encuesta.puntos_encuesta > 0:
                 respuestas_extra = floor(int(valores["puntos"]) / encuesta.puntos_encuesta)
                 puntos_extra = respuestas_extra * encuesta.puntos_encuesta
-                
+
             else:
                 puntos_extra = 0
 
@@ -265,6 +266,7 @@ def modificar_encuesta(request):
         else:
 
             info = {
+                "error": error,
                 "errores": errores,
                 "valores": valores,
                 "addattr": addattr,

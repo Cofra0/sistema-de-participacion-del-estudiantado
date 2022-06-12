@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from encuestas import models
 from django.contrib import messages
 from encuestas.models import Encuesta, Persona, Responde
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from django.db.models import Sum
 from django.core.paginator import Paginator
 
@@ -192,11 +192,50 @@ def encuestas(request):  # the index view
 # Vista del resumen de encuestas creadas y respondidas por el usuario
 @login_required
 def mis_encuestas(request):
-    puntos = Persona.objects.get(user=request.user).puntos
+    publicadas = Encuesta.objects.filter(creador=request.user)
+    encuestas_publicadas = list(publicadas.values())
+
     respondidas = Responde.objects.filter(usuario=request.user).order_by("-puntos")
-    puntos_ganados = respondidas.aggregate(Sum('puntos'))
+
+    puntos = Persona.objects.get(user=request.user).puntos
+    puntos_ganados = respondidas.aggregate(Sum("puntos"))
     cantidad_respondidas = respondidas.count()
-    return render(request, "encuestas/mis_encuestas.html", {"puntos": puntos, "puntos_ganados":puntos_ganados, "cantidad_contestadas":cantidad_respondidas, "respondidas": respondidas})
+    cantidad_publicadas = publicadas.count()
+
+    for i in range(len(encuestas_publicadas)):
+        fecha = publicadas[i].plazo - datetime.now(timezone.utc)
+        fechaSegundos = fecha.seconds
+        fechaDias = fecha.days
+        hours, remainder = divmod(fechaSegundos, 3600)
+        minutes, seconds = divmod(remainder, 60)
+
+        if fecha <= timedelta(0):
+            encuestas_publicadas[i]["plazo"] = "Terminado"
+        elif fechaDias != 0:
+            encuestas_publicadas[i]["plazo"] = "{}d".format(int(fechaDias))
+        elif int(hours) != 0:
+            encuestas_publicadas[i]["plazo"] = "{:02}:{:02}:{:02}h".format(int(hours), int(minutes), int(seconds))
+        elif int(minutes) != 0:
+            encuestas_publicadas[i]["plazo"] = "{:02}:{:02}m".format(int(minutes), int(seconds))
+        else:
+            encuestas_publicadas[i]["plazo"] = "{:02}s".format(int(seconds))
+        encuestas_publicadas[i]["participantes"] = publicadas[
+            i
+        ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
+        encuestas_publicadas[i]["puntos_encuesta"] = publicadas[i].puntos_encuesta
+
+    return render(
+        request,
+        "encuestas/mis_encuestas.html",
+        {
+            "puntos": puntos,
+            "puntos_ganados": puntos_ganados,
+            "cantidad_publicadas": cantidad_publicadas,
+            "cantidad_contestadas": cantidad_respondidas,
+            "publicadas": encuestas_publicadas,
+            "respondidas": respondidas,
+        },
+    )
 
 
 # Vista donde la encuesta está incertada

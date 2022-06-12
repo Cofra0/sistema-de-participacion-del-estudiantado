@@ -123,9 +123,16 @@ header .user_name span{
 }
 
 .cuser{
-    font-size: 2.2em;
+    font-size: 15px;
     margin-left: 1em;
-    margin-bottom: .8em;
+    margin-bottom: .4em;
+    text-align: left !important;
+}
+
+.cuser2{
+    font-size: 15px;
+    margin-left: 1em;
+    margin-bottom: 1.5em;
     text-align: left !important;
 }
 
@@ -151,3 +158,4 @@ header .user_name span{
 #imagen_logo {
     vertical-align: baseline !important;
 }
+

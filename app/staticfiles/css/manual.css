@@ -1,0 +1,316 @@
+body{
+    background: #eef0f5;
+}
+
+
+.base {
+    font-family:system-ui,Roboto,Arial,sans-serif;
+    display: grid;
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 3rem;
+
+
+    grid-template-columns: repeat(2, 50%);
+    grid-gap: 20px;
+
+    grid-template-areas: "header   header"
+                          "main     main";     
+                            
+}
+
+
+.manual_title {
+    color: #fffbc4;
+    background: #222a38;
+    grid-area: header;
+    text-align: center;
+    font-size: 60px;
+    border-radius: 0.5rem;
+    padding: 3%;
+}
+
+.manual_body {
+
+    background: #eef0f5;
+    grid-area: main;
+    padding: 2%;
+    display: grid;
+
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto;
+    grid-gap: 20px 0;
+
+    grid-template-areas:"description0"
+                        "sub-title1"
+                        "description1"
+                        "text1_1"
+                        "text1_2"
+                        "text1_3"
+                        "extra1_1"
+                        "text1_4"
+                        "text1_5"
+                        "extra1_2"
+                        "sub-title2"
+                        "description2"
+                        "text2_1"
+                        "text2_2"
+                        "text2_3"
+                        "text2_4"
+                        "text2_5";
+
+    border-radius: 0.5rem;
+    font-size: 20px;
+}
+
+.text{
+    line-height: 1.5;
+    display: flex;
+    background: white;
+    border-radius: 2rem;
+    border: 1px solid #d0d7de;
+}
+
+
+/* Presentacion de la página */
+.text-0 {
+    line-height: 1.5;
+    grid-area: description0;
+    padding: 4% 2%;
+    display: block;
+    background: white;
+    border: 1px solid #d0d7de;
+    border-radius: 1rem;
+}
+
+.img-0{
+    text-align: center;
+    margin: 2rem 0 2rem 0;
+}
+
+.img-0 img{
+    width: 90%;
+    border-radius: 2rem;
+    padding: 0.5em;
+}
+
+
+
+
+
+/* Como publicar encuestas */
+.sub-title-1 {
+    grid-area: sub-title1;
+    margin-top: 3rem;
+}
+
+.text-1_0 {
+    line-height: 1.5;
+    grid-area: description1;
+    padding: 4% 2%;
+    display: block;
+    background: white;
+    border: 1px solid #d0d7de;
+    border-radius: 1rem;
+}
+
+/* instrucion 1 */
+.text-1_1 {
+    grid-area: text1_1;
+}
+
+.instruction-1_1{
+    padding: 4% 2%;
+}
+
+.img-1_1{
+    width: 500px;
+    border-radius: 2rem;
+    padding: 0.5em;
+}
+
+
+/* instrucion 2 */
+.text-1_2 {
+    grid-area: text1_2;
+}
+
+.instruction-1_2{
+    padding: 4% 2%;
+}
+
+.img-1_2{
+    width: 500px;
+    border-radius: 2rem;
+    padding: 0.5em;
+}
+
+
+/* instrucion 3 */
+.text-1_3 {
+    grid-area: text1_3;
+}
+
+.instruction-1_3{
+    padding: 4% 2%;
+}
+
+.img-1_3{
+    width: 500px;
+    border-radius: 2rem;
+    padding: 0.5em;
+}
+
+.advice {
+    line-height: 1.5;
+    grid-area: extra1_1;
+    padding: 4% 2%;
+    display: block;
+    background: white;
+    border: 1px solid #d0d7de;
+    border-radius: 1rem;
+}
+
+
+/* instrucion 4 */
+.text-1_4 {
+    grid-area: text1_4;
+}
+
+.instruction-1_4{
+    padding: 4% 2%;
+}
+
+.img-1_4{
+    width: 500px;
+    border-radius: 2rem;
+    padding: 0.5em;
+}
+
+
+/* instrucion 5 */
+.text-1_5 {
+    grid-area: text1_5;
+}
+
+.instruction-1_5{
+    padding: 4% 2%;
+}
+
+.img-1_5{
+    width: 500px;
+    border-radius: 2rem;
+    padding: 0.5em;
+}
+
+.advice_2 {
+    line-height: 1.5;
+    grid-area: extra1_2;
+    padding: 4% 2%;
+    display: block;
+    background: white;
+    border: 1px solid #d0d7de;
+    border-radius: 1rem;
+}
+
+
+
+
+/* Como responder encuestas */
+.sub-title-2 {
+    grid-area: sub-title2;
+    margin-top: 3rem;
+}
+
+/* Presentacion de la página */
+.text-2_0 {
+    line-height: 1.5;
+    grid-area: description2;
+    padding: 4% 2%;
+    display: block;
+    background: white;
+    border: 1px solid #d0d7de;
+    border-radius: 1rem;
+}
+
+/* instrucion 1 */
+.text-2_1 {
+    grid-area: text2_1;
+}
+
+.instruction-2_1{
+    padding: 4% 2%;
+}
+
+.img-2_1{
+    width: 500px;
+    border-radius: 2rem;
+    padding: 0.5em;
+}
+
+
+
+/* instrucion 2 */
+.text-2_2 {
+    grid-area: text2_2;
+}
+
+.instruction-2_2{
+    padding: 4% 2%;
+}
+
+.img-2_2{
+    width: 500px;
+    border-radius: 2rem;
+    padding: 0.5em;
+}
+
+
+
+/* instrucion 3 */
+.text-2_3 {
+    grid-area: text2_3;
+}
+
+.instruction-2_3{
+    padding: 4% 2%;
+}
+
+.img-2_3{
+    width: 500px;
+    border-radius: 2rem;
+    padding: 0.5em;
+}
+
+
+
+/* instrucion 4 */
+.text-2_4 {
+    grid-area: text2_4;
+}
+
+.instruction-2_4{
+    padding: 4% 2%;
+}
+
+.img-2_4{
+    width: 500px;
+    border-radius: 2rem;
+    padding: 0.5em;
+}
+
+
+/* instrucion 5 */
+.text-2_5 {
+    grid-area: text2_5;
+}
+
+.instruction-2_5{
+    padding: 4% 2%;
+}
+
+.img-2_5{
+    width: 500px;
+    border-radius: 2rem;
+    padding: 0.5em;
+}

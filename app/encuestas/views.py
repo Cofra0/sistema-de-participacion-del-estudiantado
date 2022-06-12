@@ -195,6 +195,11 @@ def encuestas(request):  # the index view
 @login_required
 def mis_encuestas(request):
     publicadas = Encuesta.objects.filter(creador=request.user)
+
+    # Asegurarse que las encuestas estén activas
+    for encuesta in publicadas:
+        encuesta.active
+
     encuestas_publicadas = list(publicadas.values())
 
     respondidas = Responde.objects.filter(usuario=request.user).order_by("-puntos")
@@ -318,6 +323,21 @@ def modificar_encuesta(request):
             }
 
             return render(request, "encuestas/modificar_encuesta.html", info)
+
+
+@login_required
+def cerrar_encuesta(request):
+    user = request.user
+    if request.method == "GET":
+        id_encuesta = int(request.GET.get("id", -1))
+        try:
+            encuesta = Encuesta.objects.get(id=id_encuesta, creador=user, activa=True)
+            encuesta.closing_survey()
+        except Encuesta.DoesNotExist:
+            return HttpResponseRedirect("/mis_encuestas/")
+    return HttpResponseRedirect("/mis_encuestas/")
+
+
 # Vista de manual de usuario
 @login_required
 def manual(request):

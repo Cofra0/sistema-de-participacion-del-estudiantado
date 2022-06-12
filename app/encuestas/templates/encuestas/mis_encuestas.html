@@ -79,10 +79,14 @@
                                 Cerrada
                             {% endif %}
                         </td>
-                        <td class="poll_actualizar"><a href="">Modificar</a></td>
+                        <td class="poll_actualizar">
+                            {% if publicada.activa %}
+                                <a href="/modificar_encuesta/?id={{publicada.id}}">Modificar</a>
+                            {% endif %}
+                        </td>
                         <td class="poll_close">
                             {% if publicada.activa %}
-                                <a href="">Cerrar</a>
+                                <a href="/cerrar_encuesta/?id={{publicada.id}}">Cerrar</a>          
                             {% endif %}
                         </td>
                     </tr>

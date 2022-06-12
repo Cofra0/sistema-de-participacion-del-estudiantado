@@ -37,7 +37,13 @@ python manage.py quitarpuntos 1234567
 
                 usuario_plataforma = models.Persona.objects.get(user=usuario)
 
-                usuario_plataforma.puntos -= options["puntos"]
+                if usuario_plataforma.puntos >= options["puntos"]:
+
+                    usuario_plataforma.puntos -= options["puntos"]
+
+                else:
+
+                    usuario_plataforma.puntos = 0
 
                 usuario_plataforma.save()
 

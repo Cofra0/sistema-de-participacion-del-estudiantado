@@ -183,7 +183,8 @@ function validate() {
     }
 
     error = document.getElementById("error-recaptcha");
-    var response = grecaptcha.getResponse();
+    div = document.getElementById("recaptcha");
+    let response = grecaptcha.getResponse();
     if (response.length == 0) {
         //reCaptcha not verified
         error.innerHTML = 'Se debe contestar el Captcha';

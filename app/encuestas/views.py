@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 
-# from django.http import HttpResponse, HttpResponseRedirect
-# from django.template.loader import get_template
 from django.http import HttpResponseRedirect
+
+# from django.template.loader import get_template
 from django.shortcuts import render
 from encuestas.utils import validar_form
 from django.http import JsonResponse

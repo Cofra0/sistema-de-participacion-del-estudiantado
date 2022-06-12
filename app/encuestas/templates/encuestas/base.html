@@ -48,7 +48,7 @@
                     <div class="cuser"> <a href=/manual#publicar1 >¿Cómo publicar una encuesta?</a> </div>
                     <div class="cuser"> <a href=/manual#responder1 >¿Cómo obtener puntos?</a> </div>
                     <div class="cuser2 "> <a href= >Reportar Falla</a> </div>
-                    <a href={% url 'sso:logout' %} class="close_session_btn">Cerrar Sesión</a>
+                    <a href="{% url 'sso:logout' %}" class="close_session_btn">Cerrar Sesión</a>
                 </div>
             </div>    
         </div>
@@ -59,6 +59,15 @@
 
 
     <!-- content's view start -->
+
+      <div class="modal" id="reportar-info">
+        <div class="contenido-modal">
+            <span id="cerrar-reportar-info" onclick="cerrar()">&times;</span>
+            <div class="titulo-modal">
+
+            </div>
+        </div>
+    </div>
 
     {% block content %}
 

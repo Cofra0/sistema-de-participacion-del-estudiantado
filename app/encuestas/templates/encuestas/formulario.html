@@ -120,8 +120,11 @@
                 <div id="error-codigo-encuesta" class="invalid-feedback">{{errores.codigo_encuesta}}</div>
             </div>
 
-            <script src='https://www.google.com/recaptcha/api.js'></script>
-            <div class="g-recaptcha" data-sitekey="6LdRSRYUAAAAAFCqQ1aZnYfRGJIlAUMX3qkUWlcF"></div>
+            <div class="container mb-4" id="div-recaptcha">
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                <div class="g-recaptcha" id="recaptcha" data-sitekey="6LfATWIgAAAAAOeEyjD8wxjn4Y_rsSJDxRT4Top2"></div>
+                <div id="error-recaptcha" class="invalid-feedback">{{errores.recaptcha}}</div>
+            </div>
 
             <div class="container text-center">
                 <button type="submit" class="btn btn-primary">Publicar Encuesta</button>

@@ -7,5 +7,4 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("sso/", include("sso.urls")),
     path("", include("encuestas.urls")),
-    path("captcha/", include("captcha.urls")),
 ]

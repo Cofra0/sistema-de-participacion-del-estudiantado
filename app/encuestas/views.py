@@ -12,6 +12,7 @@ from encuestas.models import Encuesta, Persona, Responde, Entra
 from datetime import datetime, timezone, timedelta
 from django.db.models import Sum
 from django.core.paginator import Paginator
+from math import floor
 from django.urls import reverse
 
 # from django.contrib.auth import authenticate, login, logout
@@ -30,7 +31,7 @@ def ver_encuesta(request):
     entrada_encuesta = Entra(usuario=user, encuesta=encuesta, fecha_entrada=datetime.now())
     entrada_encuesta.save()
 
-    return HttpResponseRedirect(reverse("encuestas:encuesta_seleccionada") + "?id=" + str(id_encuesta))
+    return HttpResponseRedirect(reverse("encuestas:encuesta") + "?id=" + str(id_encuesta))
 
 
 # Renderiza la pagina principal de encuestas.
@@ -53,7 +54,7 @@ def encuesta_seleccionada(request):
         "nombre": encuesta.nombre,
         "descripcion": encuesta.descripcion,
         "link": link,
-        "puntos_encuesta": encuesta.puntos_encuesta + PUNTOS_BASE,
+        "puntos_encuesta": encuesta.reward_points,  # encuesta.puntos_encuesta + PUNTOS_BASE,
         "puntos": puntos_user,
     }
 
@@ -65,8 +66,11 @@ def encuesta_seleccionada(request):
         hash = request.POST["hash"]
 
         if str(hash) == str(encuesta.hash) and not Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
-            puntos_encuesta = encuesta.puntos_encuesta
+
+            # Guardamos los datos de haber respondido
+            recompensa = encuesta.reward_points
             fecha = datetime.now(timezone.utc)
+            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=recompensa)  # puntos_encuesta + PUNTOS_BASE
 
             # Obtenemos el último objeto Entra que fue creado para esta encuesta y este usuario en específico
             entra_encuesta = Entra.objects.filter(usuario=request.user, encuesta=encuesta).order_by("-fecha_entrada")
@@ -74,13 +78,11 @@ def encuesta_seleccionada(request):
             entra_encuesta = entra_encuesta[0]
 
             # Guardamos los dato de haber respondido
-            responde = Responde(
-                usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=puntos_encuesta + PUNTOS_BASE, entrada_encuesta=entra_encuesta
-            )
+            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=recompensa, entrada_encuesta=entra_encuesta)
             responde.save()
 
             # Devolver vista principal. con algún mensaje de éxito?
-            messages.success(request, f"Has reclamado {str(puntos_encuesta + PUNTOS_BASE)} puntos")
+            messages.success(request, f"Has reclamado {str(recompensa)} puntos")
             return HttpResponseRedirect(request.path_info + "?id=" + str(id_encuesta))
 
         elif str(hash) == str(encuesta.hash) and Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
@@ -167,17 +169,15 @@ def get_status_json(request, link):
 @login_required
 def encuestas(request):  # the index view
 
-    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
-        "-puntos_encuesta"
-    )  # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
-
+    encuestasDisponibles = sorted(Encuesta.objects.filter(activa=True), key=lambda t: t.reward_points, reverse=True)
+    # encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
+    #    "-puntos_encuesta"
+    # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
     # Se realiza el filtro adicional
     for encuesta in encuestasDisponibles:
         encuesta.active
 
-    # Se vuelve a hacer la query
-    encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by("-puntos_encuesta")
-    encuestas = list(encuestasDisponibles.values())
+    encuestas = [{**x.__dict__, "reward_points": x.reward_points, "participantes": x.participantes.count()} for x in encuestasDisponibles]
 
     # Estarán actualizados si se cerró la encuesta
     puntos = Persona.objects.get(user=request.user).puntos
@@ -197,10 +197,7 @@ def encuestas(request):  # the index view
             encuestas[i]["plazo"] = "{:02}:{:02}m".format(int(minutes), int(seconds))
         else:
             encuestas[i]["plazo"] = "{:02}s".format(int(seconds))
-        encuestas[i]["participantes"] = encuestasDisponibles[
-            i
-        ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
-        encuestas[i]["puntos_encuesta"] = encuestasDisponibles[i].puntos_encuesta + PUNTOS_BASE
+        encuestas[i]["puntos_encuesta"] = encuestas[i]["reward_points"]
 
     paginator = Paginator(encuestas, 15)  # Mostramos 15 encuestas por pagina
 
@@ -214,12 +211,21 @@ def encuestas(request):  # the index view
 @login_required
 def mis_encuestas(request):
     publicadas = Encuesta.objects.filter(creador=request.user)
-    encuestas_publicadas = list(publicadas.values())
+
+    # Asegurarse que las encuestas estén activas
+    for encuesta in publicadas:
+        encuesta.active
+
+    publicadas = publicadas.order_by("-activa")
+    encuestas_publicadas = [{**x.__dict__, "reward_points": x.reward_points, "participantes": x.participantes.count()} for x in publicadas]
+    # encuestas_publicadas = list(publicadas.values())
 
     respondidas = Responde.objects.filter(usuario=request.user).order_by("-puntos")
 
     puntos = Persona.objects.get(user=request.user).puntos
     puntos_ganados = respondidas.aggregate(Sum("puntos"))
+    pg_num = puntos_ganados["puntos__sum"]
+    puntos_ganados["puntos__sum"] = pg_num if pg_num is None else 0
     cantidad_respondidas = respondidas.count()
     cantidad_publicadas = publicadas.count()
 
@@ -240,10 +246,6 @@ def mis_encuestas(request):
             encuestas_publicadas[i]["plazo"] = "{:02}:{:02}m".format(int(minutes), int(seconds))
         else:
             encuestas_publicadas[i]["plazo"] = "{:02}s".format(int(seconds))
-        encuestas_publicadas[i]["participantes"] = publicadas[
-            i
-        ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
-        encuestas_publicadas[i]["puntos_encuesta"] = publicadas[i].puntos_encuesta
 
     return render(
         request,
@@ -264,6 +266,92 @@ def mis_encuestas(request):
 def encuesta_prueba(request):
     puntos = Persona.objects.get(user=request.user).puntos
     return render(request, "encuestas/encuesta_prueba.html", {"puntos": puntos})
+
+
+@login_required
+def modificar_encuesta(request):
+    user = request.user
+    persona = Persona.objects.get(user=user)
+    puntos = persona.puntos
+    encuesta = []
+    error = False
+    if request.method == "GET":
+        id_encuesta = int(request.GET.get("id", -1))
+    elif request.method == "POST":
+        id_encuesta = int(request.POST.get("id", -1))
+
+    # Por si se ponen a jugar con la url
+    try:
+        encuesta = Encuesta.objects.get(id=id_encuesta, creador=user, activa=True)
+
+        # Actualizar estado por si las moscas, habrá error si la encuesta se desactiva
+        error = not encuesta.active
+
+    except Encuesta.DoesNotExist:
+        error = True
+
+    # Se abre la página
+    if request.method == "GET":
+        return render(request, "encuestas/modificar_encuesta.html", {"puntos": puntos, "error": error, "encuesta": encuesta})
+
+    elif request.method == "POST":
+        errores, valores, addattr, res, date_obj = validar_form.validar_actualizacion(request, puntos)
+
+        # No se modifica si hay errores o la encuesta cumplió su plazo al mandar la modificación
+        if len(errores) == 0 and encuesta.active:
+
+            # Calculo de los puntos para que no sobren, solamente si la encuesta ya daba más que los puntos base
+
+            if encuesta.puntos_encuesta > 0:
+                respuestas_extra = floor(int(valores["puntos"]) / encuesta.puntos_encuesta)
+                puntos_extra = respuestas_extra * encuesta.puntos_encuesta
+
+            else:
+                puntos_extra = 0
+
+            nuevo_total = puntos_extra + encuesta.puntos_totales
+            # Se descuentan los puntos del usuario
+            persona.puntos -= puntos_extra
+
+            # Se actualiza la encuesta
+            encuesta.nombre = valores["nombre"]
+            encuesta.puntos_totales = nuevo_total
+            encuesta.descripcion = valores["descripcion"]
+            encuesta.plazo = date_obj
+
+            encuesta.save()
+
+            # Se guardan los cambios del usuario
+            persona.save()
+
+            # Devolver vista principal. con algún mensaje de éxito?
+            messages.success(request, "Se guardaron los cambios")
+            return HttpResponseRedirect(request.path_info + "?id=" + str(id_encuesta))
+        else:
+
+            info = {
+                "error": error,
+                "errores": errores,
+                "valores": valores,
+                "addattr": addattr,
+                "puntos_disp": puntos,
+                "puntos": puntos,
+            }
+
+            return render(request, "encuestas/modificar_encuesta.html", info)
+
+
+@login_required
+def cerrar_encuesta(request):
+    user = request.user
+    if request.method == "GET":
+        id_encuesta = int(request.GET.get("id", -1))
+        try:
+            encuesta = Encuesta.objects.get(id=id_encuesta, creador=user, activa=True)
+            encuesta.closing_survey()
+        except Encuesta.DoesNotExist:
+            return HttpResponseRedirect("/mis_encuestas/")
+    return HttpResponseRedirect("/mis_encuestas/")
 
 
 # Vista de manual de usuario

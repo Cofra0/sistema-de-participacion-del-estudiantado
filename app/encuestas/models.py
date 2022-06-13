@@ -66,6 +66,27 @@ class Encuesta(models.Model):
         # El plazo no ha acabado, se retorna el valor de "activa" (si la encuesta fue eliminada será false)
         return self.activa
 
+    @property
+    def base_points(self):
+        """Puntos base, por ahora es simplemente 1"""
+        return 1
+
+    @property
+    def reward_points(self):
+        """Puntos que se entregan por responder correctamente una encuesta"""
+        if self.puntos_totales <= 0:
+            return self.base_points
+        else:
+            return self.base_points + self.puntos_encuesta
+
+    @property
+    def fecha_termino(self):
+        return self.plazo.strftime("%Y-%m-%d")
+
+    @property
+    def hora_termino(self):
+        return self.plazo.strftime("%H:%M")
+
     def closing_survey(self):
         """
         Llamar cuando se elimine una encuesta o se termine el plazo.
@@ -79,7 +100,7 @@ class Encuesta(models.Model):
 
             # Se guardan los cambios
             creador.save()
-        self.puntos_encuesta = 0  # Por si las moscas, la encuesta ya no debería poder repartir puntos
+        # self.puntos_encuesta = 0  # Por si las moscas, la encuesta ya no debería poder repartir puntos
         self.activa = False  # Se cierra la encuesta
         self.save()
 
@@ -140,7 +161,9 @@ def discountSurveyPoints(sender, instance, created, **kwargs):
     if created and actual_survey_points > 0:  # Verificamos que no se hayan acabado los puntos de la encuesta
         points_to_discount = survey.puntos_encuesta  # Obtenemos los puntos a ser descontados
         new_points = actual_survey_points - points_to_discount
-        if new_points == 0:  # Se acabaron los puntos y debemos setearlo a lo base
-            setSurveyPointsToZero(survey)  # Los puntos base se dan en la vista, por lo cual acá lo seteamos a 0
+
+        # La idea es no cambiar el puntos_encuesta
+        # if new_points == 0:  # Se acabaron los puntos y debemos setearlo a lo base
+        #     setSurveyPointsToZero(survey)  # Los puntos base se dan en la vista, por lo cual acá lo seteamos a 0
         survey.puntos_totales = new_points
         survey.save()

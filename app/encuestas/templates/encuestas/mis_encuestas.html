@@ -70,7 +70,7 @@
                         <th class="poll_name">{{publicada.nombre}}</th>
                         <td class="poll_time">{{publicada.plazo}}</td>
                         <td class="poll_answers">{{publicada.participantes}}</td>
-                        <td class="poll_points">{{publicada.puntos_encuesta}}</td>
+                        <td class="poll_points">{{publicada.reward_points}}</td>
                         <td class="poll_total_points">{{publicada.puntos_totales}}</td>
                         <td class="poll_status">
                             {% if publicada.activa %}
@@ -79,10 +79,35 @@
                                 Cerrada
                             {% endif %}
                         </td>
-                        <td class="poll_actualizar"><a href="">Modificar</a></td>
+                        <td class="poll_actualizar">
+                            {% if publicada.activa %}
+                                <a href="/modificar_encuesta/?id={{publicada.id}}">Modificar</a>
+                            {% endif %}
+                        </td>
                         <td class="poll_close">
                             {% if publicada.activa %}
-                                <a href="">Cerrar</a>
+                            <div id="myModal_{{publicada.id}}" class="modal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <span id="close_{{publicada.id}}" class="close">&times;</span>
+                                    <h2>Cierre de encuesta</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Está a punto de cerrar la encuesta: {{publicada.nombre}} </p>
+                                        <p>Esta acción le devolverá la siguiente cantidad de puntos: {{publicada.puntos_totales}}</p>
+                                        <p>Tenga en cuenta que esta acción es irreversible. Si quiere que su encuesta sea visible en la página, tendrá que publicarla de nuevo.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h3>Cerrar encuesta?</h3>
+                                        <button type="button" style="cursor:pointer;" class="publicar_encuesta_btn" id="send-button_{{publicada.id}}" 
+                                            onclick="location.href= '/cerrar_encuesta/?id={{publicada.id}}'">
+                                            Cerrar encuesta
+                                        </button>
+                                        <button type="button" style="cursor:pointer;" id="close-button_{{publicada.id}}" class="back_btn">Volver</button>
+                                    </div>
+                                </div>
+                            </div>
+                                <a id="close_survey_{{publicada.id}}" href="#">Cerrar</a>      
                             {% endif %}
                         </td>
                     </tr>
@@ -127,5 +152,33 @@
 
 </section>
 
+<script>
+    {% for publicada in publicadas%}
+    {% if publicada.activa %}
+
+            document.getElementById(`close_survey_{{publicada.id}}`).onclick = function() {
+                document.getElementById(`myModal_{{publicada.id}}`).style.display = "block";
+                return false;
+            }
+
+            document.getElementById(`close-button_{{publicada.id}}`).onclick = function(){
+                document.getElementById(`myModal_{{publicada.id}}`).style.display = "none";
+                return false;
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            document.getElementById(`close_{{publicada.id}}`).onclick = function() {
+                document.getElementById(`myModal_{{publicada.id}}`).style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+            if (event.target == document.getElementById(`myModal_{{publicada.id}}`)) {
+                document.getElementById(`myModal_{{publicada.id}}`).style.display = "none";
+            }
+            }
+        {% endif %}
+    {% endfor %}
+</script>
 
 {% endblock %}

@@ -47,7 +47,7 @@
                     <div class="cuser usuario">Cuenta</div>
                     <div class="cuser"> <a href=/manual#publicar1 >¿Cómo publicar una encuesta?</a> </div>
                     <div class="cuser"> <a href=/manual#responder1 >¿Cómo obtener puntos?</a> </div>
-                    <div class="cuser2 "> <a href= >Reportar Falla</a> </div>
+                    <div class="cuser2 "> <a onclick="reportar()">Reportar Falla</a> </div>
                     <a href="{% url 'sso:logout' %}" class="close_session_btn">Cerrar Sesión</a>
                 </div>
             </div>    
@@ -64,7 +64,28 @@
         <div class="contenido-modal">
             <span id="cerrar-reportar-info" onclick="cerrar()">&times;</span>
             <div class="titulo-modal">
-
+                <h1> ¿CÓMO Y CUÁNDO REPORTAR? </h1>
+                <br>
+                <h2> ¿Cuándo reportar? </h2>
+                <div class="texto-info-reporte">
+                    El usuario tendrá derecho a reportar en 2 casos generales.
+                    <ul class="anotaciones-info-reporte">
+                        <li>Si se encuentra alguna irregularidad en alguna encuesta publicada en la plataforma, haciendo referencia a, por ejemplo, no encontrarse el código para el reclamó de puntos al final de la encuesta correspondiente.</li>
+                        <li>Si el propietario de una encuesta presencia respuestas malintencionadas (no contesta, contesta cualquier cosa, entre otros.) en alguna de las respuestas recibidas por parte de otro usuario.</li>
+                    </ul>
+                </div>
+                <br>
+                <h2>¿Cómo reportar? </h2>
+                <div class="texto-info-reporte">
+                    Para realizar el reporte y hacer efectivo una notificación o castigo al usuario correspondiente, se tienen que seguir los siguientes pasos, dependiendo del caso.
+                    <ul class="anotaciones-info-reporte">
+                        <li>Si se trata de alguna irregularidad en alguna encuesta publicada, escribe un mensaje al correo "ejemplo@gmail.com" , y en el asunto del correo pon "IRREGULARIDAD ENCUESTA PUBLICADA", a continuación describe la irregularidad y adjunta tanto el enlace de la encuesta, como una imagen en donde sea visible la encuesta y la irregularidad detectada.</li>
+                        <li>En caso de tratarse de respuestas malintencionadas, tienes que enviar un mensaje al correo "ejemplo@gmail.com" , y en el asunto del correo poner "RESPUESTAS MALINTENCIONADAS", a continuación debes describir el problema y adjuntar los datos de la respuesta correspondiente al reclamo, y el enlace a tu encuesta.</li>
+                    </ul>
+                    Después de haber enviado el correo, el equipo revisará los antecedentes y realizará el castigo o notificación correspondiente.
+                    <br>
+                    El castigo puede ir desde una reducción de los puntos del usuario correspondiente hasta un sumario.
+                </div>
             </div>
         </div>
     </div>
@@ -80,6 +101,7 @@
     <footer class="footer">
     </footer>
 
+    <div class="reportar-info-btn" onclick="reportar()">¡ REPORTAR !</div>
 </body>
 
 <script src="{% static 'javascript/base.js' %}"></script>

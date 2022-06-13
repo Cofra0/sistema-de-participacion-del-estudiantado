@@ -159,7 +159,9 @@ header .user_name span{
     vertical-align: baseline !important;
 }
 
-.modal {
+.modal-reporte {
+    font-size: 20px;
+    font-family:'Times New Roman', Times, serif;
     display: none;
     position: fixed;
     text-align: center;
@@ -181,7 +183,6 @@ header .user_name span{
     min-width: fit-content;
     margin: auto 20px;
     background-color: #fefefe;
-    overflow-y: scroll;
 }
 
 #cerrar-reportar-info {

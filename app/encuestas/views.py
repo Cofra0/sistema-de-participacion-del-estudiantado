@@ -18,13 +18,12 @@ from django.urls import reverse
 
 PUNTOS_BASE = 1  # Puntos base a entregar por responder la encuesta independientemente de los puntos ofrecidos por el que la publica
 
-#Vista sólamente llamada desde algún acceso a la encuesta, lo que cuenta cuando
-#la persona entra a la encuesta, lo que registramos en un objeto
+
+# Vista sólamente llamada desde algún acceso a la encuesta, lo que cuenta cuando
+# la persona entra a la encuesta, lo que registramos en un objeto
 @login_required
 def ver_encuesta(request):
     user = request.user
-    user_ins = models.Persona.objects.get(user=user)
-
     id_encuesta = int(request.GET["id"])
 
     encuesta = Encuesta.objects.get(id=id_encuesta)
@@ -32,6 +31,7 @@ def ver_encuesta(request):
     entrada_encuesta.save()
 
     return HttpResponseRedirect(reverse("encuestas:encuesta_seleccionada") + "?id=" + str(id_encuesta))
+
 
 # Renderiza la pagina principal de encuestas.
 @login_required
@@ -192,11 +192,11 @@ def encuestas(request):  # the index view
         if fechaDias != 0:
             encuestas[i]["plazo"] = "{}d".format(int(fechaDias))
         elif int(hours) != 0:
-            encuestas[i]["plazo"] = "{:2}h".format(int(hours))
+            encuestas[i]["plazo"] = "{:02}:{:02}:{:02}h".format(int(hours), int(minutes), int(seconds))
         elif int(minutes) != 0:
-            encuestas[i]["plazo"] = "{:2}m".format(int(minutes))
+            encuestas[i]["plazo"] = "{:02}:{:02}m".format(int(minutes), int(seconds))
         else:
-            encuestas[i]["plazo"] = "{:2}s".format(int(seconds))
+            encuestas[i]["plazo"] = "{:02}s".format(int(seconds))
         encuestas[i]["participantes"] = encuestasDisponibles[
             i
         ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta

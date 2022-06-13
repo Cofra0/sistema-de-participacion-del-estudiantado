@@ -69,8 +69,8 @@ def encuesta_seleccionada(request):
 
             # Guardamos los datos de haber respondido
             recompensa = encuesta.reward_points
-            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=recompensa)  # puntos_encuesta + PUNTOS_BASE
             fecha = datetime.now(timezone.utc)
+            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=recompensa)  # puntos_encuesta + PUNTOS_BASE
 
             # Obtenemos el último objeto Entra que fue creado para esta encuesta y este usuario en específico
             entra_encuesta = Entra.objects.filter(usuario=request.user, encuesta=encuesta).order_by("-fecha_entrada")
@@ -78,9 +78,7 @@ def encuesta_seleccionada(request):
             entra_encuesta = entra_encuesta[0]
 
             # Guardamos los dato de haber respondido
-            responde = Responde(
-                usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=recompensa, entrada_encuesta=entra_encuesta
-            )
+            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=recompensa, entrada_encuesta=entra_encuesta)
             responde.save()
 
             # Devolver vista principal. con algún mensaje de éxito?

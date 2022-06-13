@@ -9,6 +9,7 @@ urlpatterns = [
     path("encuestas/", views.encuestas, name="encuestas"),
     path("mis_encuestas/", views.mis_encuestas, name="mis_encuestas"),
     path("encuesta_prueba/", views.encuesta_prueba, name="encuesta"),
-    path("encuesta/", views.encuesta_seleccionada, name="encuesta"),
+    path("encuesta/", views.encuesta_seleccionada, name="encuesta_seleccionada"),
     path("manual/", views.manual, name="manual"),
+    path("ver_encuesta/", views.ver_encuesta, name="ver_encuesta")
 ]

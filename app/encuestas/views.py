@@ -8,16 +8,30 @@ from encuestas.utils import validar_form
 from django.http import JsonResponse
 from encuestas import models
 from django.contrib import messages
-from encuestas.models import Encuesta, Persona, Responde
-from datetime import datetime, timezone
+from encuestas.models import Encuesta, Persona, Responde, Entra
+from datetime import datetime, timezone, timedelta
 from django.db.models import Sum
 from django.core.paginator import Paginator
-
+from django.urls import reverse
 
 # from django.contrib.auth import authenticate, login, logout
 
 PUNTOS_BASE = 1  # Puntos base a entregar por responder la encuesta independientemente de los puntos ofrecidos por el que la publica
 
+#Vista sólamente llamada desde algún acceso a la encuesta, lo que cuenta cuando
+#la persona entra a la encuesta, lo que registramos en un objeto
+@login_required
+def ver_encuesta(request):
+    user = request.user
+    user_ins = models.Persona.objects.get(user=user)
+
+    id_encuesta = int(request.GET["id"])
+
+    encuesta = Encuesta.objects.get(id=id_encuesta)
+    entrada_encuesta = Entra(usuario=user, encuesta=encuesta, fecha_entrada=datetime.now())
+    entrada_encuesta.save()
+
+    return HttpResponseRedirect(reverse("encuestas:encuesta_seleccionada") + "?id=" + str(id_encuesta))
 
 # Renderiza la pagina principal de encuestas.
 @login_required
@@ -27,8 +41,8 @@ def encuesta_seleccionada(request):
     puntos_user = user_ins.puntos
 
     id_encuesta = int(request.GET["id"])
-    encuesta = Encuesta.objects.get(id=id_encuesta)
 
+    encuesta = Encuesta.objects.get(id=id_encuesta)
     link = encuesta.link
 
     if link.endswith("usp=sf_link"):
@@ -52,10 +66,17 @@ def encuesta_seleccionada(request):
 
         if str(hash) == str(encuesta.hash) and not Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
             puntos_encuesta = encuesta.puntos_encuesta
-            fecha = datetime.now().strftime("%Y-%m-%d")
+            fecha = datetime.now(timezone.utc)
+
+            # Obtenemos el último objeto Entra que fue creado para esta encuesta y este usuario en específico
+            entra_encuesta = Entra.objects.filter(usuario=request.user, encuesta=encuesta).order_by("-fecha_entrada")
+            print(entra_encuesta)
+            entra_encuesta = entra_encuesta[0]
 
             # Guardamos los dato de haber respondido
-            responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=puntos_encuesta + PUNTOS_BASE)
+            responde = Responde(
+                usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=puntos_encuesta + PUNTOS_BASE, entrada_encuesta=entra_encuesta
+            )
             responde.save()
 
             # Devolver vista principal. con algún mensaje de éxito?
@@ -171,11 +192,11 @@ def encuestas(request):  # the index view
         if fechaDias != 0:
             encuestas[i]["plazo"] = "{}d".format(int(fechaDias))
         elif int(hours) != 0:
-            encuestas[i]["plazo"] = "{:02}:{:02}:{:02}h".format(int(hours), int(minutes), int(seconds))
+            encuestas[i]["plazo"] = "{:2}h".format(int(hours))
         elif int(minutes) != 0:
-            encuestas[i]["plazo"] = "{:02}:{:02}m".format(int(minutes), int(seconds))
+            encuestas[i]["plazo"] = "{:2}m".format(int(minutes))
         else:
-            encuestas[i]["plazo"] = "{:02}s".format(int(seconds))
+            encuestas[i]["plazo"] = "{:2}s".format(int(seconds))
         encuestas[i]["participantes"] = encuestasDisponibles[
             i
         ].participantes.count()  # se cuentan los usuarios que han participado de la encuesta
@@ -194,9 +215,13 @@ def encuestas(request):  # the index view
 def mis_encuestas(request):
     puntos = Persona.objects.get(user=request.user).puntos
     respondidas = Responde.objects.filter(usuario=request.user).order_by("-puntos")
-    puntos_ganados = respondidas.aggregate(Sum('puntos'))
+    puntos_ganados = respondidas.aggregate(Sum("puntos"))
     cantidad_respondidas = respondidas.count()
-    return render(request, "encuestas/mis_encuestas.html", {"puntos": puntos, "puntos_ganados":puntos_ganados, "cantidad_contestadas":cantidad_respondidas, "respondidas": respondidas})
+    return render(
+        request,
+        "encuestas/mis_encuestas.html",
+        {"puntos": puntos, "puntos_ganados": puntos_ganados, "cantidad_contestadas": cantidad_respondidas, "respondidas": respondidas},
+    )
 
 
 # Vista donde la encuesta está incertada

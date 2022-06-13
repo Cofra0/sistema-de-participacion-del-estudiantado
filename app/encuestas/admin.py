@@ -6,11 +6,12 @@ from django.contrib import admin
 
 # Register your models here.
 
-from encuestas.models import Persona, Encuesta, Responde
+from encuestas.models import Persona, Encuesta, Responde, Entra
 
 admin.site.register(Persona)
 admin.site.register(Encuesta)
 admin.site.register(Responde)
+admin.site.register(Entra)
 
 """
 class CustomUserAdmin(UserAdmin):

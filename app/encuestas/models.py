@@ -84,13 +84,21 @@ class Encuesta(models.Model):
         self.save()
 
 
+# Modelo que representa la entrada de un usuario a una encuesta
+# Cada vez que un usuario entra a una encuesta, se registra un objeto de entrada, el cual
+# puede o no, estar asociado a una respuesta
+class Entra(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    encuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
+    fecha_entrada = models.DateTimeField(verbose_name="Fecha de la entrada")
+
+
 class Responde(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     encuesta = models.ForeignKey(Encuesta, on_delete=models.CASCADE)
-
     fecha = models.DateTimeField(verbose_name="Fecha de la respuesta")
-
     puntos = models.IntegerField(verbose_name="Puntos entregados por responder")
+    entrada_encuesta = models.ForeignKey(Entra, on_delete=models.CASCADE)
 
 
 # Para que se cree una persona cada vez que se crea un usuario

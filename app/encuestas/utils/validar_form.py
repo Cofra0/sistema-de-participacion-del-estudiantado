@@ -1,6 +1,8 @@
 import datetime
 import re
 import urllib.request
+from django.conf import settings
+import requests
 
 
 def get_status_url(url):
@@ -109,6 +111,7 @@ def validar_formulario(request, puntos_disp):
     num_preg = request.POST["numero-preguntas"]
     link_encuesta = request.POST["link-encuesta"]
     codigo_encuesta = request.POST["codigo-encuesta"]
+    recaptcha = grecaptcha_verify(request)
 
     errores = {}
     valores = {
@@ -121,6 +124,7 @@ def validar_formulario(request, puntos_disp):
         "numero_preguntas": num_preg,
         "link_encuesta": link_encuesta,
         "codigo_encuesta": codigo_encuesta,
+        "recaptcha": recaptcha,
     }
     addattr = {}
 
@@ -212,4 +216,31 @@ def validar_formulario(request, puntos_disp):
         errores["codigo_encuesta"] = "No puede tener más de 255 caracteres."
         addattr["codigo_encuesta"] = "is-invalid"
 
+    if not recaptcha["status"]:
+        errores["recaptcha"] = "Se debe contestar el Captcha"
+        addattr["recaptcha"] = "is-invalid"
+
     return errores, valores, addattr, res, date_obj
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(",")[0]
+    else:
+        ip = request.META.get("REMOTE_ADDR")
+    return ip
+
+
+def grecaptcha_verify(request):
+    if request.method == "POST":
+        response = {}
+        data = request.POST
+        captcha_rs = data.get("g-recaptcha-response")
+        url = "https://www.google.com/recaptcha/api/siteverify"
+        params = {"secret": settings.RECAPTCHA_PRIVATE_KEY, "response": captcha_rs, "remoteip": get_client_ip(request)}
+        verify_rs = requests.get(url, params=params, verify=True)
+        verify_rs = verify_rs.json()
+        response["status"] = verify_rs.get("success", False)
+        response["message"] = verify_rs.get("error-codes", None) or "Unspecified error."
+        return response

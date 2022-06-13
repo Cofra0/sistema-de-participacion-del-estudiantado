@@ -224,6 +224,8 @@ def mis_encuestas(request):
 
     puntos = Persona.objects.get(user=request.user).puntos
     puntos_ganados = respondidas.aggregate(Sum("puntos"))
+    pg_num  = puntos_ganados['puntos__sum']
+    puntos_ganados['puntos__sum'] = pg_num if pg_num!=None else 0
     cantidad_respondidas = respondidas.count()
     cantidad_publicadas = publicadas.count()
 

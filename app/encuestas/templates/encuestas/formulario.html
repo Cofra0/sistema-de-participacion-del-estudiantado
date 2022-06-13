@@ -23,6 +23,7 @@
     {% block cls_encuestas %}{% endblock %}
     {% block cls_encuesta %}{% endblock %}
     {% block cls_publicar %}active{% endblock %}
+    {% block cls_manual %}{% endblock %}
 
 
 {% block content %}
@@ -118,6 +119,12 @@
                 <label for="codigo-encuesta" class="form-label">Código de verificación</label>
                 <input value="{{valores.codigo_encuesta}}" type="text" class="form-control form-control-sm {{addattr.codigo_encuesta}}" name="codigo-encuesta" required id="codigo-encuesta" placeholder="d2d9fsanofuasf7fowjiqf">
                 <div id="error-codigo-encuesta" class="invalid-feedback">{{errores.codigo_encuesta}}</div>
+            </div>
+
+            <div class="container mb-4" id="div-recaptcha">
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                <div class="g-recaptcha" id="recaptcha" data-sitekey="6LfATWIgAAAAAOeEyjD8wxjn4Y_rsSJDxRT4Top2"></div>
+                <div id="error-recaptcha" class="invalid-feedback">{{errores.recaptcha}}</div>
             </div>
 
             <div class="container text-center">

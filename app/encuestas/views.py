@@ -189,7 +189,9 @@ def encuestas(request):  # the index view
         hours, remainder = divmod(fechaSegundos, 3600)
         minutes, seconds = divmod(remainder, 60)
 
-        if fechaDias != 0:
+        if fecha < datetime.now(timezone.utc) - datetime.now(timezone.utc):
+            encuestas[i]["plazo"] = "00s"
+        elif fechaDias != 0:
             encuestas[i]["plazo"] = "{}d".format(int(fechaDias))
         elif int(hours) != 0:
             encuestas[i]["plazo"] = "{:02}:{:02}:{:02}h".format(int(hours), int(minutes), int(seconds))

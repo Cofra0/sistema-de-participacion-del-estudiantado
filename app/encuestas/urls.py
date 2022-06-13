@@ -13,4 +13,5 @@ urlpatterns = [
     path("modificar_encuesta/", views.modificar_encuesta, name="modificar_encuesta"),
     path("manual/", views.manual, name="manual"),
     path("cerrar_encuesta/", views.cerrar_encuesta, name="cerrar_encuesta"),
+    path("ver_encuesta/", views.ver_encuesta, name="ver_encuesta"),
 ]

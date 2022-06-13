@@ -8,15 +8,30 @@ from encuestas.utils import validar_form
 from django.http import JsonResponse
 from encuestas import models
 from django.contrib import messages
-from encuestas.models import Encuesta, Persona, Responde
+from encuestas.models import Encuesta, Persona, Responde, Entra
 from datetime import datetime, timezone, timedelta
 from django.db.models import Sum
 from django.core.paginator import Paginator
 from math import floor
+from django.urls import reverse
 
 # from django.contrib.auth import authenticate, login, logout
 
 PUNTOS_BASE = 1  # Puntos base a entregar por responder la encuesta independientemente de los puntos ofrecidos por el que la publica
+
+
+# Vista sólamente llamada desde algún acceso a la encuesta, lo que cuenta cuando
+# la persona entra a la encuesta, lo que registramos en un objeto
+@login_required
+def ver_encuesta(request):
+    user = request.user
+    id_encuesta = int(request.GET["id"])
+
+    encuesta = Encuesta.objects.get(id=id_encuesta)
+    entrada_encuesta = Entra(usuario=user, encuesta=encuesta, fecha_entrada=datetime.now())
+    entrada_encuesta.save()
+
+    return HttpResponseRedirect(reverse("encuestas:encuesta_seleccionada") + "?id=" + str(id_encuesta))
 
 
 # Renderiza la pagina principal de encuestas.
@@ -27,8 +42,8 @@ def encuesta_seleccionada(request):
     puntos_user = user_ins.puntos
 
     id_encuesta = int(request.GET["id"])
-    encuesta = Encuesta.objects.get(id=id_encuesta)
 
+    encuesta = Encuesta.objects.get(id=id_encuesta)
     link = encuesta.link
 
     if link.endswith("usp=sf_link"):
@@ -51,12 +66,21 @@ def encuesta_seleccionada(request):
         hash = request.POST["hash"]
 
         if str(hash) == str(encuesta.hash) and not Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
-            # puntos_encuesta = encuesta.puntos_encuesta
-            fecha = datetime.now().strftime("%Y-%m-%d")
 
             # Guardamos los datos de haber respondido
             recompensa = encuesta.reward_points
             responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=recompensa)  # puntos_encuesta + PUNTOS_BASE
+            fecha = datetime.now(timezone.utc)
+
+            # Obtenemos el último objeto Entra que fue creado para esta encuesta y este usuario en específico
+            entra_encuesta = Entra.objects.filter(usuario=request.user, encuesta=encuesta).order_by("-fecha_entrada")
+            print(entra_encuesta)
+            entra_encuesta = entra_encuesta[0]
+
+            # Guardamos los dato de haber respondido
+            responde = Responde(
+                usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=recompensa, entrada_encuesta=entra_encuesta
+            )
             responde.save()
 
             # Devolver vista principal. con algún mensaje de éxito?

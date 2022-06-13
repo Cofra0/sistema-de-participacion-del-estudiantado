@@ -23,3 +23,15 @@ user_name.onclick = function(){
 let en = document.getElementById("encuestas");
 let mien = document.getElementById("mis_encuestas");
 let puen = document.getElementById("publicar");
+
+/* Muestra info de como reportar */
+function reportar() {
+    let modal = document.getElementById("reportar-info");
+    modal.style.display = "block";
+}
+
+/* Cierra la info de como reportar */
+function cerrar() {
+    let modal1 = document.getElementById("reportar-info");
+    modal1.style.display = "none";
+}

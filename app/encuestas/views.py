@@ -31,7 +31,7 @@ def ver_encuesta(request):
     entrada_encuesta = Entra(usuario=user, encuesta=encuesta, fecha_entrada=datetime.now())
     entrada_encuesta.save()
 
-    return HttpResponseRedirect(reverse("encuestas:encuesta_seleccionada") + "?id=" + str(id_encuesta))
+    return HttpResponseRedirect(reverse("encuestas:encuesta") + "?id=" + str(id_encuesta))
 
 
 # Renderiza la pagina principal de encuestas.

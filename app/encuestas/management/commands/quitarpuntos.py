@@ -7,7 +7,7 @@ from argparse import RawTextHelpFormatter
 class Command(BaseCommand):
 
     help = """
-Resta la cantidad de puntos al usuario ingresado (resta 100 puntos por defecto)
+Resta la cantidad de puntos al usuario ingresado (resta la mitad de los puntos por defecto)
 
 Ejemplos:
 python manage.py quitarpuntos 1234567 --puntos 50
@@ -22,14 +22,14 @@ python manage.py quitarpuntos 1234567
     def add_arguments(self, parser):
 
         parser.add_argument("usuario", type=int, help="Rut del usuario sin dígito verificador")
-        parser.add_argument("--puntos", type=int, default=100, help="Cantidad de puntos a restar")
+        parser.add_argument("--puntos", type=int, help="Cantidad de puntos a restar")
 
     def handle(self, *args, **options):
 
         try:
             usuario = User.objects.get(username=options["usuario"])
 
-            if options["puntos"] < 0:
+            if options["puntos"] and options["puntos"] < 0:
 
                 self.stdout.write(self.style.ERROR("La cantidad de puntos debe ser mayor a 0"))
 
@@ -37,9 +37,11 @@ python manage.py quitarpuntos 1234567
 
                 usuario_plataforma = models.Persona.objects.get(user=usuario)
 
-                if usuario_plataforma.puntos >= options["puntos"]:
+                restar = usuario_plataforma.puntos // 2 + usuario_plataforma.puntos % 2 if options["puntos"] is None else options["puntos"]
 
-                    usuario_plataforma.puntos -= options["puntos"]
+                if usuario_plataforma.puntos >= restar:
+
+                    usuario_plataforma.puntos -= restar
 
                 else:
 

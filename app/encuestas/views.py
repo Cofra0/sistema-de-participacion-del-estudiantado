@@ -9,11 +9,15 @@ from django.http import JsonResponse
 from encuestas import models
 from django.contrib import messages
 from encuestas.models import Encuesta, Persona, Responde, Entra
-from datetime import datetime, timezone, timedelta
+from datetime import timedelta
 from django.db.models import Sum
 from django.core.paginator import Paginator
 from math import floor
 from django.urls import reverse
+from django.utils import timezone
+from tzlocal import get_localzone
+
+local_tz = get_localzone()
 
 # from django.contrib.auth import authenticate, login, logout
 
@@ -28,7 +32,7 @@ def ver_encuesta(request):
     id_encuesta = int(request.GET["id"])
 
     encuesta = Encuesta.objects.get(id=id_encuesta)
-    entrada_encuesta = Entra(usuario=user, encuesta=encuesta, fecha_entrada=datetime.now())
+    entrada_encuesta = Entra(usuario=user, encuesta=encuesta, fecha_entrada=timezone.now())
     entrada_encuesta.save()
 
     return HttpResponseRedirect(reverse("encuestas:encuesta") + "?id=" + str(id_encuesta))
@@ -69,7 +73,7 @@ def encuesta_seleccionada(request):
 
             # Guardamos los datos de haber respondido
             recompensa = encuesta.reward_points
-            fecha = datetime.now(timezone.utc)
+            fecha = timezone.now()
             responde = Responde(usuario=request.user, encuesta=encuesta, fecha=fecha, puntos=recompensa)  # puntos_encuesta + PUNTOS_BASE
 
             # Obtenemos el último objeto Entra que fue creado para esta encuesta y este usuario en específico
@@ -137,6 +141,9 @@ def agregar_encuesta(request):
             )
 
             # Se guarda la encuesta
+
+            print(date_obj)
+
             encuesta.save()
 
             # Se guardan los cambios del usuario
@@ -183,13 +190,13 @@ def encuestas(request):  # the index view
     puntos = Persona.objects.get(user=request.user).puntos
 
     for i in range(len(encuestas)):
-        fecha = encuestasDisponibles[i].plazo - datetime.now(timezone.utc)
+        fecha = encuestasDisponibles[i].plazo - timezone.now()
         fechaSegundos = fecha.seconds
         fechaDias = fecha.days
         hours, remainder = divmod(fechaSegundos, 3600)
         minutes, seconds = divmod(remainder, 60)
 
-        if fecha < datetime.now(timezone.utc) - datetime.now(timezone.utc):
+        if fecha < timezone.now() - timezone.now():
             encuestas[i]["plazo"] = "00s"
         elif fechaDias != 0:
             encuestas[i]["plazo"] = "{}d".format(int(fechaDias))
@@ -232,13 +239,13 @@ def mis_encuestas(request):
     cantidad_publicadas = publicadas.count()
 
     for i in range(len(encuestas_publicadas)):
-        fecha = publicadas[i].plazo - datetime.now(timezone.utc)
+        fecha = publicadas[i].plazo - timezone.now()
         fechaSegundos = fecha.seconds
         fechaDias = fecha.days
         hours, remainder = divmod(fechaSegundos, 3600)
         minutes, seconds = divmod(remainder, 60)
 
-        if fecha <= timedelta(0):
+        if fecha <= timedelta(0) or not encuestas_publicadas[i]["activa"]:
             encuestas_publicadas[i]["plazo"] = "Terminado"
         elif fechaDias != 0:
             encuestas_publicadas[i]["plazo"] = "{}d".format(int(fechaDias))
@@ -294,6 +301,8 @@ def modificar_encuesta(request):
 
     # Se abre la página
     if request.method == "GET":
+        encuesta.plazo = encuesta.plazo.astimezone(local_tz)
+        print(encuesta.plazo)
         return render(request, "encuestas/modificar_encuesta.html", {"puntos": puntos, "error": error, "encuesta": encuesta})
 
     elif request.method == "POST":
@@ -305,8 +314,10 @@ def modificar_encuesta(request):
             # Calculo de los puntos para que no sobren, solamente si la encuesta ya daba más que los puntos base
 
             if encuesta.puntos_encuesta > 0:
+                print(valores["puntos"])
                 respuestas_extra = floor(int(valores["puntos"]) / encuesta.puntos_encuesta)
                 puntos_extra = respuestas_extra * encuesta.puntos_encuesta
+                print(puntos_extra)
 
             else:
                 puntos_extra = 0

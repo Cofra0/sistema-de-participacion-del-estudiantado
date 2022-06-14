@@ -3,6 +3,19 @@ import re
 import urllib.request
 from django.conf import settings
 import requests
+import pytz
+from tzlocal import get_localzone
+
+local_tz = get_localzone()
+
+
+# Utilidad que convierte una fecha string a la misma fecha pasada desde tiempo local a utc
+# para ser guardada en la base de datos, cumpliendo con el estandar de guardar los
+# objetos de tiempo en utc y sólo convertir a tiempo local en la vista del usuario
+def stringToUtc(string):
+    date_obj = datetime.datetime.strptime(string, "%Y-%m-%d %H:%M")
+    local_datetime = date_obj.replace(tzinfo=local_tz)
+    return local_datetime.astimezone(pytz.utc)
 
 
 def get_status_url(url):
@@ -94,8 +107,7 @@ def validar_actualizacion(request, puntos_disp):
 
     date_obj = None
     if not errores.get("fecha_termino") and not errores.get("hora_termino"):
-        date_obj = datetime.datetime.strptime(fecha_termino + " " + hora_termino, "%Y-%m-%d %H:%M")
-
+        date_obj = stringToUtc(fecha_termino + " " + hora_termino)
     res = {}
     return errores, valores, addattr, res, date_obj
 
@@ -186,7 +198,7 @@ def validar_formulario(request, puntos_disp):
 
     date_obj = None
     if not errores.get("fecha_termino") and not errores.get("hora_termino"):
-        date_obj = datetime.datetime.strptime(fecha_termino + " " + hora_termino, "%Y-%m-%d %H:%M")
+        date_obj = stringToUtc(fecha_termino + " " + hora_termino)
 
     if num_preg == "" or not num_preg.isdigit() or int(num_preg) < 0:
         errores["numero_preguntas"] = "Se debe ingresar un número entero positivo."

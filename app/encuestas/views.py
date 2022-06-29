@@ -374,6 +374,7 @@ def manual(request):
     puntos = Persona.objects.get(user=request.user).puntos
     return render(request, "encuestas/manual.html", {"puntos": puntos})
 
+
 # Logout personalizado
 @login_required
 def cerrar_sesion(request):

@@ -236,7 +236,6 @@ def mis_encuestas(request):
     puntos_ganados = respondidas.aggregate(Sum("puntos"))
     pg_num = puntos_ganados["puntos__sum"]
     puntos_ganados["puntos__sum"] = pg_num if pg_num is not None else 0
-    print(pg_num)
     cantidad_respondidas = respondidas.count()
     cantidad_publicadas = publicadas.count()
 

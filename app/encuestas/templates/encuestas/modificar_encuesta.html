@@ -57,19 +57,20 @@
             <div class="container mb-4">
                 <div class="row">
                     <div class="col-sm" id="div-puntos">
-                        <label for="puntos" class="form-label">Añadir puntos totales</label>
+                        <label for="puntos" class="form-label">Añadir puntos al pool</label>
                         <input value="0" class="form-control form-control-sm {{addattr.puntos}}" type="number" min="0" max="{{puntos}}" name="puntos" id="puntos" required onchange="currentPoints()">
                         <div id="error-puntos" class="invalid-feedback">{{errores.puntos}}</div>
                         <div class="text-secondary"><p>
-                             Actualmente se reparten {{encuesta.reward_points}} 
+                             
                              {%if encuesta.puntos_totales > 0 %}
-                             ({{encuesta.puntos_encuesta}} + 1 punto base) puntos por respuesta.
+                             Actualmente se reparten  {{encuesta.reward_points}}  ({{encuesta.puntos_encuesta}} + 1 punto base) puntos por respuesta, de un pool de {{encuesta.puntos_totales}} puntos.
                              {%else%}
-                             (1 punto base) puntos por respuesta.
+                             Actualmente se reparte 1 punto base por respuesta, ya que tienes {{encuesta.puntos_totales}} puntos en tu pool.
                              {%endif%}
-                              La encuesta está diseñada para repartir {{encuesta.puntos_encuesta}} puntos de tu pool de puntos (sin contar puntos base) por respuesta.
+                             
+                             <br>
+                              La encuesta está diseñada para repartir {{encuesta.puntos_encuesta}} puntos de tu pool de puntos por respuesta, si quieres modificar esa cantidad debes publicar nuevamente la encuesta.
                               <br>
-                               Actualmente tienes {{encuesta.puntos_totales}} puntos en tu pool.
                               Para agregar más puntos, debes ingresar una cantidad múltiplo de {{encuesta.puntos_encuesta}} o superior.</p>
                              <p id='add-points'></p></div>
                         </div>

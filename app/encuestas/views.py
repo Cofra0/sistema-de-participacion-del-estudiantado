@@ -16,6 +16,7 @@ from math import floor
 from django.urls import reverse
 from django.utils import timezone
 from tzlocal import get_localzone
+from django.contrib.auth import logout as custom_logout
 
 local_tz = get_localzone()
 
@@ -373,3 +374,18 @@ def cerrar_encuesta(request):
 def manual(request):
     puntos = Persona.objects.get(user=request.user).puntos
     return render(request, "encuestas/manual.html", {"puntos": puntos})
+
+# Logout personalizado
+@login_required
+def cerrar_sesion(request):
+    username = None
+    if request.user.is_authenticated:
+        username = request.user.username
+    ip_address = request.META.get("HTTP_X_FORWARDED_FOR", "0xL").split(", ")[0]
+    ldata = {"ip_address": ip_address, "username": request.user.username}
+    if not username:
+        print("intenta logout sin estar logeado", ldata)
+    else:
+        print("logout usuario", ldata)
+    custom_logout(request)
+    return HttpResponseRedirect("https://ucampus.uchile.cl/")

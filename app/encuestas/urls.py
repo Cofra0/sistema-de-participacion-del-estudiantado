@@ -14,4 +14,5 @@ urlpatterns = [
     path("manual/", views.manual, name="manual"),
     path("cerrar_encuesta/", views.cerrar_encuesta, name="cerrar_encuesta"),
     path("ver_encuesta/", views.ver_encuesta, name="ver_encuesta"),
+    path("cerrar_sesion/", views.cerrar_sesion, name="cerrar_sesion"),
 ]

@@ -1,7 +1,7 @@
 Django==4.0.5
 psycopg2==2.9.3
 django-tinymce==3.4.0
-Pillow==9.1.1
+Pillow==9.2.0
 requests==2.28.1
 django-json-widget==1.1.1
 pytz==2022.1

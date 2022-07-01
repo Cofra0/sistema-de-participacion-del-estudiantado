@@ -29,7 +29,7 @@
             {% csrf_token %}
 
             <input type="text" name="id" id="id" value="{{ id }}" hidden>
-
+            <input type="checkbox" name="respondido" id="respondido" value="{{ respondido }}" hidden>
             <span class="code">Código de comprobación:</span> <br>
             <label for="hash"></label>
             <input type="text" name="hash" id="hash" placeholder="Introduzca hash">
@@ -38,5 +38,7 @@
         </form>
     </div>
 </section>
+
+<script src="{% static '/js/alert.js' %}"></script>
 
 {% endblock %}

@@ -11,9 +11,7 @@
     {% endblock %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" media="screen" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">    
 
     <title>{% block title %} {% endblock %}</title>
 </head>
@@ -47,7 +45,7 @@
                     <div class="cuser usuario">Cuenta</div>
                     <div class="cuser"> <a href=/manual#publicar1 >¿Cómo publicar una encuesta?</a> </div>
                     <div class="cuser"> <a href=/manual#responder1 >¿Cómo obtener puntos?</a> </div>
-                    <div class="cuser2 "> <a onclick="reportar()">Reportar Falla</a> </div>
+                    <div class="cuser2"> <a href="javascript:;" onclick="reportar()">Reportar Falla</a> </div>
                     <a href="{% url 'encuestas:cerrar_sesion' %}" class="close_session_btn">Cerrar Sesión</a>
                 </div>
             </div>    

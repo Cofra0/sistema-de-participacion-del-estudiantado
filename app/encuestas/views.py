@@ -51,6 +51,8 @@ def encuesta_seleccionada(request):
     encuesta = Encuesta.objects.get(id=id_encuesta)
     link = encuesta.link
 
+    respondido = Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists()
+
     if link.endswith("usp=sf_link"):
         link.replace("usp=sf_link", "embedded=true")
 
@@ -61,6 +63,7 @@ def encuesta_seleccionada(request):
         "link": link,
         "puntos_encuesta": encuesta.reward_points,  # encuesta.puntos_encuesta + PUNTOS_BASE,
         "puntos": puntos_user,
+        "respondido": respondido,
     }
 
     if request.method == "GET":
@@ -69,8 +72,10 @@ def encuesta_seleccionada(request):
     elif request.method == "POST":
         encuesta = Encuesta.objects.get(id=id_encuesta)
         hash = request.POST["hash"]
-
-        if str(hash) == str(encuesta.hash) and not Responde.objects.filter(usuario=request.user, encuesta=encuesta).exists():
+        if encuesta.creador == request.user:
+            messages.error(request, "No puedes responder una encuesta que has creado")
+            return HttpResponseRedirect(request.path_info + "?id=" + str(id_encuesta))
+        elif str(hash) == str(encuesta.hash) and not respondido:
 
             # Guardamos los datos de haber respondido
             recompensa = encuesta.reward_points
@@ -177,7 +182,9 @@ def get_status_json(request, link):
 @login_required
 def encuestas(request):  # the index view
 
-    encuestasDisponibles = sorted(Encuesta.objects.filter(activa=True), key=lambda t: t.reward_points, reverse=True)
+    encuestasDisponibles = sorted(
+        Encuesta.objects.filter(activa=True).exclude(creador=request.user), key=lambda t: t.reward_points, reverse=True
+    )
     # encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
     #    "-puntos_encuesta"
     # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos

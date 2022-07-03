@@ -45,8 +45,8 @@ footer{
 }
 
 #select_respondidas{
+    padding: .5%;
     margin-bottom: 1%;
-    padding: 1%;
     border-radius: .5rem;
 }
 

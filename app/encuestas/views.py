@@ -189,10 +189,17 @@ def encuestas(request):  # the index view
     #    "-puntos_encuesta"
     # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos
     # Se realiza el filtro adicional
+    respondidas = {}
     for encuesta in encuestasDisponibles:
         encuesta.active
+        respuesta = Responde.objects.filter(encuesta=encuesta, usuario=request.user).exists()
+        respondidas[encuesta] = respuesta
 
-    encuestas = [{**x.__dict__, "reward_points": x.reward_points, "participantes": x.participantes.count()} for x in encuestasDisponibles]
+    print(respondidas)
+    encuestas = [
+        {**x.__dict__, "reward_points": x.reward_points, "participantes": x.participantes.count(), "respondida": respondidas[x]}
+        for x in encuestasDisponibles
+    ]
 
     # Estarán actualizados si se cerró la encuesta
     puntos = Persona.objects.get(user=request.user).puntos

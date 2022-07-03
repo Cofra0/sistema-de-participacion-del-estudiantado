@@ -5,6 +5,7 @@
 
 {% block links %} 
 <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" media="screen" />
+<script src="{% static '/js/filter.js' %}"></script>
 {% endblock %}
 
 {% block cls_encuestas %}active{% endblock %}
@@ -18,9 +19,14 @@
     <h1>U-Encuestas</h1>
 </section>
 
-
 <!-- Poll List -->
 <section class="ranking_polls">
+    <p class="centrado">Filtrar:</p>
+    <select name="filtro_respondidas" class="centrado" id="select_respondidas" onchange="filterByAnswered(event)">
+        <option value="All">-- TODAS --</option>
+        <option value="Not Answered">No contestadas</option>
+        <option value="Answered">Contestadas</option>
+    </select>
     <table class="ranking">
         <thead class="parameters">
             <tr>
@@ -34,13 +40,14 @@
         </thead>
         <tbody class="polls">
             {% for encuesta in page_obj%}
-            <tr>
+            <tr class="encuesta">
                 <th scope="row" class="poll_rank">{{forloop.counter}}</th>
                 <td class="poll_name">{{encuesta.nombre}}</td>
                 <td class="poll_time">{{encuesta.plazo}}</td>
                 <td class="poll_answers">{{encuesta.participantes}}</td>
                 <td class="poll_link"><a href="/ver_encuesta?id={{ encuesta.id }}">Contestar</a></td>
                 <td class="poll_points"><div class="pts1">{{encuesta.puntos_encuesta}}</div></td>
+                <td style="display: none;" class="poll_answered">{{ encuesta.respondida }}</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -39,6 +39,17 @@ footer{
     box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.556);
 }
 
+.centrado{
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+#select_respondidas{
+    margin-bottom: 1%;
+    padding: 1%;
+    border-radius: .5rem;
+}
+
 table{
     border-collapse: collapse;
 }

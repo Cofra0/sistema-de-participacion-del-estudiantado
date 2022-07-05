@@ -45,7 +45,7 @@
                     <div class="cuser usuario">Cuenta</div>
                     <div class="cuser"> <a href=/manual#publicar1 >¿Cómo publicar una encuesta?</a> </div>
                     <div class="cuser"> <a href=/manual#responder1 >¿Cómo obtener puntos?</a> </div>
-                    <div class="cuser2"> <a href="javascript:;" onclick="reportar()">Reportar Falla</a> </div>
+                    <div class="cuser2"> <a href="javascript:;" onclick="reportar()">Reportar Mal Uso</a> </div>
                     <a href="{% url 'encuestas:cerrar_sesion' %}" class="close_session_btn">Cerrar Sesión</a>
                 </div>
             </div>    
@@ -62,7 +62,7 @@
         <div class="contenido-modal">
             <span id="cerrar-reportar-info" onclick="cerrar()">&times;</span>
             <div class="titulo-modal">
-                <h1 class="titulo-info-reporte"> ¿CÓMO Y CUÁNDO REPORTAR? </h1>
+                <h1 class="titulo-info-reporte"> ¿CÓMO Y CUÁNDO REPORTAR UN MAL USO DE LA APLICACIÓN? </h1>
                 <br>
                 <h2 class="subtitulo-info-reporte"> ¿Cuándo reportar? </h2>
                 <div class="texto-info-reporte">
@@ -99,7 +99,7 @@
     <footer class="footer">
     </footer>
 
-    <div class="reportar-info-btn" onclick="reportar()">¡ REPORTAR !</div>
+    <div class="reportar-info-btn" onclick="reportar()">¡ REPORTAR MAL USO !</div>
 </body>
 
 <script src="{% static 'javascript/base.js' %}"></script>

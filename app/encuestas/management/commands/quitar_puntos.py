@@ -10,8 +10,8 @@ class Command(BaseCommand):
 Resta la cantidad de puntos al usuario ingresado (resta la mitad de los puntos por defecto)
 
 Ejemplos:
-python manage.py quitarpuntos 1234567 --puntos 50
-python manage.py quitarpuntos 1234567
+python manage.py quitar_puntos 1234567 --puntos 50
+python manage.py quitar_puntos 1234567
     """
 
     def create_parser(self, *args, **kwargs):

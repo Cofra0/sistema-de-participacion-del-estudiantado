@@ -147,9 +147,6 @@ def agregar_encuesta(request):
             )
 
             # Se guarda la encuesta
-
-            print(date_obj)
-
             encuesta.save()
 
             # Se guardan los cambios del usuario

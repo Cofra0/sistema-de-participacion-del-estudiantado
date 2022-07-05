@@ -122,7 +122,6 @@ function validate() {
     let numRespuestas = document.getElementById("respuestas-necesarias");
     let fechaTermino = document.getElementById("fecha-termino");
     let horaTermino = document.getElementById("hora-termino");
-    let numPreguntas = document.getElementById("numero-preguntas");
     let linkEncuesta = document.getElementById("link-encuesta");
     let codigoEncuesta = document.getElementById("codigo-encuesta");
 
@@ -239,17 +238,6 @@ function validate() {
             div.classList.remove("is-invalid");
         }
     }
-
-    error = document.getElementById("error-numero-preguntas");
-    div = document.getElementById("numero-preguntas");
-    if (numPreguntas.value == '' || isNaN(numPreguntas.value) || !Number.isInteger(Number(numPreguntas.value)) || Number(numPreguntas.value) < 0) {
-        error.innerHTML = 'Se debe ingresar un número entero positivo';
-        div.classList.add("is-invalid");
-        state = false;
-    } else {
-        div.classList.remove("is-invalid");
-    }
-
 
     error = document.getElementById("error-link-encuesta");
     div = document.getElementById("link-encuesta");

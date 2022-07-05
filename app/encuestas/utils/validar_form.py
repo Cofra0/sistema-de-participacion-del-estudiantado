@@ -120,7 +120,6 @@ def validar_formulario(request, puntos_disp):
     num_resp = request.POST["respuestas-necesarias"]
     fecha_termino = request.POST["fecha-termino"]
     hora_termino = request.POST["hora-termino"]
-    num_preg = request.POST["numero-preguntas"]
     link_encuesta = request.POST["link-encuesta"]
     codigo_encuesta = request.POST["codigo-encuesta"]
     recaptcha = grecaptcha_verify(request)
@@ -133,7 +132,6 @@ def validar_formulario(request, puntos_disp):
         "respuestas_necesarias": num_resp,
         "fecha_termino": fecha_termino,
         "hora_termino": hora_termino,
-        "numero_preguntas": num_preg,
         "link_encuesta": link_encuesta,
         "codigo_encuesta": codigo_encuesta,
         "recaptcha": recaptcha,
@@ -199,10 +197,6 @@ def validar_formulario(request, puntos_disp):
     date_obj = None
     if not errores.get("fecha_termino") and not errores.get("hora_termino"):
         date_obj = stringToUtc(fecha_termino + " " + hora_termino)
-
-    if num_preg == "" or not num_preg.isdigit() or int(num_preg) < 0:
-        errores["numero_preguntas"] = "Se debe ingresar un número entero positivo."
-        addattr["numero_preguntas"] = "is-invalid"
 
     res = {}
 

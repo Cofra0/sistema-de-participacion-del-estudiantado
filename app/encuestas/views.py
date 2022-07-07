@@ -179,9 +179,7 @@ def get_status_json(request, link):
 @login_required
 def encuestas(request):  # the index view
 
-    encuestasDisponibles = sorted(
-        Encuesta.objects.filter(activa=True).exclude(creador=request.user), key=lambda t: t.reward_points, reverse=True
-    )
+    encuestasDisponibles = sorted(Encuesta.objects.filter(activa=True), key=lambda t: t.reward_points, reverse=True)
     # encuestasDisponibles = Encuesta.objects.filter(activa=True).order_by(
     #    "-puntos_encuesta"
     # Se filtran la encuestas disponibles y se ordenan decrecientemente por puntos

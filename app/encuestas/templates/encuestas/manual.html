@@ -37,13 +37,13 @@
             <br><br>
             Ya veremos cómo funciona el sistema de puntos pero, por ahora, veamos la estructura del sitio.
             <div class="img-0">
-                <img src="{% static 'img/principal.png' %}" alt="">
+                <img src="{% static 'img/principal1.png' %}" alt="">
             </div>
             
             En el <b>Inicio</b> podemos ver una barra de navegación que nos llevará a las distintas funcionalidades que provee el sitio. También podemos ver los puntos que tenemos disponibles para usar, así como nuestro nombre de usuario enlazado con U-Campus y, lo principal de esta parte del sitio, la lista con todas las encuestas disponibles para responder. Cada una de estas encuestas se muestra con su nombre, el tiempo restante por el que estará disponible, la cantidad de personas que la han respondido hasta el momento, un enlace para ir a contestarla y la cantidad de puntos que ofrece como recompensa.
             <br><br><br>
             <div class="img-0">
-                <img src="{% static 'img/trabajando1.png' %}" alt="">
+                <img src="{% static 'img/mis_encuestas.png' %}" alt="">
             </div>
 
             En la página <b>Mis Encuestas</b> podrás encontrar detalles sobre las encuestas que has publicado y tendrás la oportunidad de modificar ciertos parámetros, como la fecha de cierre o los puntos que ofreces. También podrás eliminar la encuesta si lo estimas conveniente.
@@ -52,14 +52,14 @@
             <br><br><br>  
 
             <div class="img-0">
-                <img src="{% static 'img/trabajando1.png' %}" alt="">
+                <img src="{% static 'img/publicar_encuesta.png' %}" alt="">
             </div>
 
             En la página <b>Publicar Encuesta</b> hallarás un formulario con todo lo necesario para publicar una encuesta. El cómo usarlo se explica <a href="#publicar1">aquí</a>.
             <br><br><br>  
 
             <div class="img-0">
-                <img src="{% static 'img/trabajando1.png' %}" alt="">
+                <img src="{% static 'img/encuesta.png' %}" alt="">
             </div>
 
  
@@ -80,10 +80,10 @@
 
         <div class="text text-1_1">
             <div class="instruction-1_1">
-                <b>1)</b> Creamos una encuesta en un formulario de Google Forms y colocamos un código alfanumérico en el mensaje de cierre de la encuesta (este nos ayudará a asignar los puntos a los usuarios que contesten tu encuesta).
+                <b>1)</b> Creamos una encuesta en un formulario de Google Forms y colocamos un código alfanumérico en el mensaje de cierre de la encuesta, el cual se puede colocar en la configuración del formulario en la sección "después del envío"  (este nos ayudará a asignar los puntos a los usuarios que contesten tu encuesta).
             </div>
             
-            <img class="img-1_1" src="{% static 'img/trabajando1.png' %}" alt="">
+            <img class="img-1_1" src="{% static 'img/formulario.png' %}" alt="">
             
         </div>
 
@@ -92,7 +92,7 @@
                 <b>2)</b> Nos dirigimos a la página <b>Publicar encuesta</b>, donde se desplegará un formulario para ingresar los datos necesarios para publicar la encuesta en el sistema.
             </div>
             
-            <img class="img-1_2" src="{% static 'img/trabajando1.png' %}" alt="">
+            <img class="img-1_2" src="{% static 'img/publicar_encuesta.png' %}" alt="">
             
         </div>
 
@@ -110,7 +110,7 @@
                 </ul>
             </div>
             
-            <img class="img-1_3" src="{% static 'img/trabajando1.png' %}" alt="">
+            <img class="img-1_3" src="{% static 'img/campos.png' %}" alt="">
             
         </div>
 
@@ -124,7 +124,7 @@
                 <b>4)</b>  Apretamos "Publicar" y ya aparecerá disponible para ser contestada en la página principal, siendo su posición en la lista la que le corresponde de acuerdo a los puntos ofrecidos.
             </div>
             
-            <img class="img-1_4" src="{% static 'img/trabajando1.png' %}" alt="">
+            <img class="img-1_4" src="{% static 'img/rank.png' %}" alt="">
             
         </div>
 
@@ -133,7 +133,7 @@
                 <b>5)</b>  En el caso de que queramos modificar el plazo durante el cual está disponible la encuesta o los puntos que ofrece, podemos hacerlo desde la página <b>Mis Encuestas</b>. Así mismo, podemos cerrarla antes de que el plazo termine desde esta misma página.
             </div>
             
-            <img class="img-1_5" src="{% static 'img/trabajando1.png' %}" alt="">
+            <img class="img-1_5" src="{% static 'img/mod.png' %}" alt="">
             
         </div>
 
@@ -158,11 +158,11 @@
 
         <div class="text text-2_1">
             <div class="instruction-2_1">
-                <b>1)</b> Empecemos por seleccionar una encuesta para contestar. Recuerda que la lista está ordenada por la cantidad de puntos que ofrece, por lo que nos conviene seleccionar una de las primeras. En este caso elegimos la "Encuesta1", la cual nos ofrece un total de <b>12 puntos</b>.
+                <b>1)</b> Empecemos por seleccionar una encuesta para contestar. Recuerda que la lista está ordenada por la cantidad de puntos que ofrece, por lo que nos conviene seleccionar una de las primeras. En este caso elegimos la "Encuesta de prueba", la cual nos ofrece un total de <b>17 puntos</b>.
                 Hacemos clic en "Contestar" y el sistema nos direccionará a ella.
             </div>
             
-            <img class="img-2_1" src="{% static 'img/trabajando1.png' %}" alt="">
+            <img class="img-2_1" src="{% static 'img/elegir.png' %}" alt="">
             
         </div>
 
@@ -171,7 +171,7 @@
                 <b>2)</b> Ahora que estamos en la página de la encuesta podemos ver una breve descripción de lo que trata la encuesta, así como la encuesta misma, lista para ser contestada.
             </div>
             
-            <img class="img-2_2" src="{% static 'img/trabajando1.png' %}" alt="">
+            <img class="img-2_2" src="{% static 'img/seleccionada.png' %}" alt="">
             
         </div>
 
@@ -180,7 +180,7 @@
                 <b>3)</b> Una vez que ya hayamos finalizado de contestar la encuesta, enviamos las respuestas y, tras ello, nos aparecerá un código en el mensaje final de la encuesta (el cual habrá puesto el creador de la encuesta).
             </div>
             
-            <img class="img-2_3" src="{% static 'img/trabajando1.png' %}" alt="">
+            <img class="img-2_3" src="{% static 'img/codigo.png' %}" alt="">
             
         </div>
 
@@ -189,7 +189,7 @@
                 <b>4)</b> Copiamos este código, que en este caso es <b>qwertyuiop123</b>, y lo pegamos en el recuadro que aparece debajo de la encuesta.
             </div>
             
-            <img class="img-2_4" src="{% static 'img/trabajando1.png' %}" alt="">
+            <img class="img-2_4" src="{% static 'img/validar.png' %}" alt="">
             
         </div>
 
@@ -198,7 +198,7 @@
                 <b>5)</b> Finalmente enviamos el código y el sistema verificará que sea igual al entregado por el usuario que publicó la encuesta. Si este es el caso, se nos hará entrega de la recompensa de puntos.
             </div>
             
-            <img class="img-2_5" src="{% static 'img/trabajando1.png' %}" alt="">
+            <img class="img-2_5" src="{% static 'img/cambio.png' %}" alt="">
             
         </div>
     </div>
